@@ -1,0 +1,124 @@
+<%- include("../../../views/admin/header"); %>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left col-md-12">
+                        <h3>Nouveau utilisateur</h3>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                          <div class="card bg-light mb-3">
+                              <div class="card-header"><h4>Veuillez renseigner les champs</h4> </div>
+                              <div class="card-body">
+
+                                <% if(message){ %>
+                                  <div class="alert alert-warning"><%= message %></div>
+                                <% } %>
+                     
+                         <form action="/create/user" method="POST" enctype="multipart/form-data">
+                            <div class="form-row">
+
+                                <div class="form-group col-md-6">
+                                    <label for="">Nom</label>
+                                    <input type="text" class="form-control" name="nom" placeholder="Nom..." required>
+                                  </div>
+
+                            <div class="form-group col-md-6">
+                                    <label for="">Prénom</label>
+                                    <input type="text" class="form-control" name="prenom" placeholder="Prénom..." required>
+                                  </div>
+
+                                  <div class="form-group col-md-6">
+                                    <label for="">Numéro carte d'identité</label>
+                                    <input type="text" class="form-control" name="numiden" placeholder="" required>
+                                  </div>
+
+                                  <div class="form-group col-md-4">
+                                    <label for="inputState">Ville</label>
+                                    <select id="inputState" name="ville" class="form-control">
+                                      <option selected>Ville</option>
+                                      <option>Alger</option>
+                                      <option>Tlemcen</option>
+                                      <option>Oran</option>
+                                    </select>
+                                  </div>
+
+                                  <div class="form-group col-md-8">
+                                      <label for="">Address</label>
+                                      <input type="text" class="form-control" name="address" placeholder="Address" required>
+
+                                  </div>
+
+                                  <div class="form-group col-md-6">
+                                    <label for="">Numéro Télephone</label>
+                                    <input type="tel" class="form-control" pattern="[0-9]{10}" name="numtel" placeholder="0768....." required>
+                                  </div>
+
+                                  <div class="form-group col-md-6">
+                                    <label for="">Email</label>
+                                    <input type="email" class="form-control"  name="email" placeholder="user@gmail.com" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required>
+                                  </div>
+
+                                  <div class="form-group col-md-6">
+               
+                                    <label for="">UserName</label>
+                                    <input type="text" class="form-control" name="username" placeholder="user_1" required>
+                                  </div>
+
+                                  <div class="form-group col-md-6">
+                                    <label for="">Mot de passe</label>
+                                    <input type="password" class="form-control" placeholder="*******" name="pwd" required>
+                                  </div>
+
+                                  <div class="form-group col-md-4">
+                                    <label for="inputProfile">Profile</label>
+                                    <select id="inputProfile" name="profile" class="form-control">
+                                      <% data.forEach(function(profile){ %>
+                                      <option><%= profile.nom %></option>
+                                      <% }) %>
+                                    </select>
+                                  </div>
+
+                                  
+                                    <div class="form-group col-md-12">
+                                      <label for="exampleFormControlFile1">Photo</label>
+                                      <input type="file" class="form-control-file" name="photo">
+                                    </div>
+                                 
+
+
+                                    <div class="form-group col-md-12">
+                                      <div class="col-md-6 offset-md-4">
+                                          <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-check-circle-o" >
+                                              Enregistrer
+                                            </i>
+                                          </button>
+                                          <a href="/usersList" class="btn btn-danger"><i class="fa fa-ban" > Annuler</i></a>
+                                      </div>  </div>
+                                
+
+                            </div>
+                            </form>
+                     
+                    </div></div></div></div>
+
+                    </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>      
+
+<%- include("../../../views/admin/footer"); %>

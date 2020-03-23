@@ -1,0 +1,56 @@
+<%- include("header"); %>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left col-md-12">
+                        <h3>Nouvelle opération</h3>
+                    </div>
+                    <div class="row">
+                    <div class="col-lg-12">
+                        <div class="card bg-light mb-3">
+                            <div class="card-header"><h4>Veuillez renseigner les champs</h4> </div>
+                            <div class="card-body">
+
+                         <form action="/opcreate" method="POST">
+                            
+                                <div class="form-group col-md-12">
+                                  
+                                    <label for=""><b>Nom Opération</b> </label>
+                                    <input type="text" class="form-control" name="nom" placeholder="Nom..." required>
+                                </div>
+
+                           
+                                  <div class="form-group">
+                                    <div class="col-md-6 offset-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                          <i class="fa fa-check-circle-o" >
+                                            Enregistrer
+                                          </i>
+                                        </button>
+                                        <a href="/opList" class="btn btn-danger"><i class="fa fa-ban" > Annuler</i></a>
+                                    </div>  </div>
+                                
+
+                           
+                            </form>
+                        </div></div></div></div>
+                    
+
+                    </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>      
+
+<%- include("footer"); %>

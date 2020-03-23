@@ -1,0 +1,74 @@
+<%- include("../../../views/admin/header"); %>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left">
+                        <h3>Liste des utilisateurs</h3>
+                    </div>
+
+                    <% if(message){ %>
+                        <% if(message.type === 'success'){ %>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+                             <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                          </div>
+                          <% } else if(message.type === 'deleted'){ %>
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+                                 <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                          <% }} %>
+
+                      <div class="pull-right">
+                        <a href="/usersList/create" class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"> Ajouter </i></a>
+                      </div>
+
+                      <div>
+                      <table class="table table-xs">
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Username</th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% data.forEach(function (user) { %>
+                             <tr class="col-md-2">
+                                 <td><span><%= user.nom %></span></td>
+                                 <td><span><%= user.prenom %></span></td>
+                                 <td><span><%= user.userName %></span></td>
+                                
+                                 <td>
+                                    <form action="/delete/profile/<%= user.id_user %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer cet achat?')">
+                                       
+                                        <a href="#" class="btn btn-primary" title="Details"><i class="fa fa-align-justify"></i></a>
+                                        <a href="/edit/user/<%= user.id_user %>" class="btn btn-info" title="Modifier"><i class="fa fa-pencil-square-o"></i></a>
+                                        <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                      
+                                    </form>
+                                </td>
+                             </tr>
+                            
+                         </tbody>
+                         <% }) %>
+                     </table>
+                    </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>     
+
+<%- include("../../../views/admin/footer"); %>
