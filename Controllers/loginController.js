@@ -18,7 +18,7 @@ module.exports = function(app){
    
     //operation table creation
     app.get('/createprofiletable', (req, res)=>{
-        let sql = 'CREATE TABLE connected(id_connect int AUTO_INCREMENT,username varchar(100), date_c datetime, date_suppression datetime, date_modication datetime, PRIMARY KEY(id_profile))';
+        let sql = 'CREATE TABLE connected(id_connect int AUTO_INCREMENT,date_connection datetime, id_user int, PRIMARY KEY(id_profile, FOREIGN KEY (id_user) REFERENCES user(id_user) ON DELETE CASCADE))';
         db.query(sql, (err, result)=> {
              if(err) throw err;
              console.log(result);
