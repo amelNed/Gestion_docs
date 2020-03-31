@@ -25,7 +25,8 @@ module.exports = function(app){
              res.send('profile table created...');
         });
         });
-
+/*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+    /** Return the profile list page */    
     app.get('/profileList', function(req, res){
         let data = "SELECT * FROM profile";
         db.query(data, (err, result)=> {
@@ -35,8 +36,7 @@ module.exports = function(app){
             res.render('admin/profile/profileList',{data: result});
             
        });
-       
-
+    
     });
 
     /* Return create page */

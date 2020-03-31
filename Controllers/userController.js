@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser');
+var passport = require('passport');
 
 
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
@@ -6,12 +7,15 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 const methodOverride = require("method-override");
 
 var fileUpload = require('express-fileupload');
-var busboy = require("then-busboy");
+//var busboy = require("then-busboy");
 
 
 
 
 module.exports = function(app){
+   
+    app.use(passport.initialize());
+    app.use(passport.session());
 
     app.use(fileUpload());
 
@@ -98,13 +102,13 @@ module.exports = function(app){
          return res.status(500).send(err);
          db.query(idpro, function(err, result){
              if(err) throw err;
-            for(i in result){
-                let userr= "INSERT INTO user(nom, prenom, ville, email, numTel, numCarte, address, userName, mdp, photo, id_profile, date_creation) VALUES('"+nom+"', '"+prenom+"', '"+ville+"', '"+email+"', '"+numTel+"', '"+numCarte+"', '"+address+"', '"+username+"', '"+pw+"', '"+img_name+"', "+result[i].id_profile+", now())";
+            
+                let userr= "INSERT INTO user(nom, prenom, ville, email, numTel, numCarte, address, userName, mdp, photo, id_profile, date_creation) VALUES('"+nom+"', '"+prenom+"', '"+ville+"', '"+email+"', '"+numTel+"', '"+numCarte+"', '"+address+"', '"+username+"', '"+pw+"', '"+img_name+"', "+result[0].id_profile+", now())";
                 db.query(userr, function(err, result1){
                     if(err) throw err;
                 });
               
-            }
+            
            
             req.session.message = {
                 type: 'success',
@@ -161,13 +165,13 @@ module.exports = function(app){
     if (!req.files){
         db.query(idpro, function(err, result){
             if(err) throw err;
-           for(i in result){
-               let edituser = "UPDATE user SET nom= '"+nom+"', prenom=  '"+prenom+"', ville=  '"+ville+"', email='"+email+"', numTel= '"+numTel+"', numCarte= '"+numCarte+"', address='"+address+"', userName=  '"+username+"', mdp= '"+pw+"', id_profile ="+result[i].id_profile+"  where id_user = "+id+" ";
+           
+               let edituser = "UPDATE user SET nom= '"+nom+"', prenom=  '"+prenom+"', ville=  '"+ville+"', email='"+email+"', numTel= '"+numTel+"', numCarte= '"+numCarte+"', address='"+address+"', userName=  '"+username+"', mdp= '"+pw+"', id_profile ="+result[0].id_profile+"  where id_user = "+id+" ";
                db.query(edituser, function(err, result1){
                    if(err) throw err;
                });
              
-           }
+           
        });
     }else{
         var file = req.files.photo;
@@ -181,13 +185,13 @@ module.exports = function(app){
               return res.status(500).send(err);
               db.query(idpro, function(err, result){
                 if(err) throw err;
-               for(i in result){
-                   let edituser = "UPDATE user SET nom= '"+nom+"', prenom=  '"+prenom+"', ville=  '"+ville+"', photo= '"+img_name+"', email='"+email+"', numTel= '"+numTel+"', numCarte= '"+numCarte+"', address='"+address+"', userName=  '"+username+"', mdp= '"+pw+"', id_profile ="+result[i].id_profile+" where id_user = "+id+" ";
+               
+                   let edituser = "UPDATE user SET nom= '"+nom+"', prenom=  '"+prenom+"', ville=  '"+ville+"', photo= '"+img_name+"', email='"+email+"', numTel= '"+numTel+"', numCarte= '"+numCarte+"', address='"+address+"', userName=  '"+username+"', mdp= '"+pw+"', id_profile ="+result[0].id_profile+" where id_user = "+id+" ";
                    db.query(edituser, function(err, result1){
                        if(err) throw err;
                    });
                  
-               }
+              
            });
 
 
@@ -226,3 +230,5 @@ res.redirect('/usersList');
    });
     
 };
+
+ 

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -212,13 +213,13 @@
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
                                 <span class="activity active"></span>
-                                <img src="/static/admin/images/users/1.jpg" height="40" width="40" alt="">
+                                <img src="/static/admin/user-images/<%= photo %>" height="40" width="40" alt="">
                             </div>
                             <div class="drop-down dropdown-profile animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="app-profile.html"><i class="icon-user"></i> <span>Profile</span></a>
+                                            <a href="/userProfile"><i class="icon-user"></i> <span>Profile</span></a>
                                         </li>
                                         <li>
                                             <a href="javascript:void()">
@@ -230,7 +231,7 @@
                                         <li>
                                             <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock Screen</span></a>
                                         </li>
-                                        <li><a href="page-login.html"><i class="icon-key"></i> <span>Logout</span></a></li>
+                                        <li><a href="/logout"><i class="icon-key"></i> <span>Logout</span></a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -268,7 +269,9 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="/opList">Liste des opérations</a></li>
+                            <% if(user_id) { %>
                             <li><a href="/opList/create">nouvelle opération</a></li>
+                            <% } %>
                         </ul>
                     </li>
                     <li>

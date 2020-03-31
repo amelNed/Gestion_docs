@@ -1,0 +1,102 @@
+<%- include("../../../views/admin/header"); %>
+<div class="content-body">
+    <div class="container-fluid mt-3">
+        <div class="row">
+     
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                           
+                        <% data.forEach(function (user){ %>
+                            <div class="row">
+                                <div class="col-md-3"></div>
+                                    <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="active-member">
+                                        <div class="table-responsive">
+
+                                    <center><img src="/static/admin/user-images/<%= user.photo %>" class="rounded-circle"  style="width:50%;height:80%;">
+                                    </center>                                            
+                        </div>
+                            </div>
+                                </div>
+                                    
+                                         </div>
+                             <div class="col-md-3"></div>
+                            </div>
+                        </div>
+
+                        
+                         <!-- Informations-->
+                        <div class="row">
+                            <div class="col-md-2"></div>
+                                <div class="col-md-8">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="active-member">
+                                    <div class="table-responsive">
+                                        <table>
+                                            <tr>
+                                                <td><b>Nom: </b></td>
+                                                <td style="text-align: center;"><%= user.nom %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>Prénom: </b></td>
+                                                <td style="text-align: center;"><%= user.prenom %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>Ville: </b></td>
+                                                <td  style="text-align: center;"><%= user.ville %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b>Address: </b></td>
+                                                <td  style="text-align: center;"><%= user.address %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b> Numéro Téléphone:  </b></td>
+                                                <td  style="text-align: center;"><%= user.numTel %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b> Numéro carte d'identitée:  </b></td>
+                                                <td  style="text-align: center;"><%= user.numCarte %></td>
+                                            </tr>
+
+                                            <tr>
+                                                <td><b> Email:  </b></td>
+                                                <td  style="text-align: center;"><%= user.email %></td>
+                                            </tr>
+
+                                        </table><br><br><br>
+
+                                        <div class="form-group col-md-12">
+                                            <div class="col-md-6 offset-md-4">
+                                                <a href="/edit/user/<%= user.id_user %>" class="btn btn-info" ><i class="fa fa-pencil-square-o" > Modifier </i></a>
+                                                <a href="/home" class="btn btn-danger" ><i class="fa fa-undo" > home </i></a>    
+                                            </div>  </div>
+                                         </div>
+                            </div></div>
+                         <div class="col-md-2"></div>
+                        </div>
+                    </div>
+
+                   
+
+                   
+
+                     <% }) %>
+                    
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<%- include("../../../views/admin/footer"); %>

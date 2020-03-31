@@ -1,4 +1,5 @@
 var bodyParser = require('body-parser');
+var passport = require('passport');
 
 
 const methodOverride = require("method-override");
@@ -11,6 +12,8 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false });
 
 
 module.exports = function(app){
+    app.use(passport.initialize());
+    app.use(passport.session());
     app.use(bodyParser.json());
 
   //Methode for using PUT methode
@@ -27,8 +30,8 @@ module.exports = function(app){
              res.send('operation table created...');
         });
         });
-
-    app.get('/opList', function(req, res){
+/*------------------------------------------------------------------------------------------------------------------------------------*/
+    app.get('/opList', authenticationMiddleware(), function(req, res){
         var data ="SELECT * FROM operation";
         db.query(data, (err, result)=> {
             if(err) throw err;
@@ -126,3 +129,26 @@ module.exports = function(app){
     
 
 };
+
+passport.serializeUser(function(user_id, done) {
+    done(null,user_id);
+  });
+  
+  passport.deserializeUser(function(user_id, done) {
+    done(null, user_id);
+   
+  });
+
+function authenticationMiddleware () {  
+	return (req, res, next) => {
+		//console.log(`req.session.passport.user: ${JSON.stringify(req.session.passport)}`);
+        console.log(req.isAuthenticated());
+        if(req.isAuthenticated()){
+            console.log("i am in the if condition")
+            return next();
+        }
+        
+       
+          res.redirect('/login')
+	}
+}
