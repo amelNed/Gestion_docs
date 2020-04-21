@@ -18,13 +18,11 @@
                     <% if(message){ %>
                         <% if(message.type === 'success'){ %>
                         <div class="alert alert-success">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
-                             <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                            <strong><%= message.intro %> </strong><span><%= message.message %></span>
                           </div>
                           <% } else if(message.type === 'deleted'){ %>
                             <div class="alert alert-danger">
-                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
-                                 <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                               <strong><%= message.intro %> </strong><span><%= message.message %></span>
                               </div>
                           <% }} %>
 

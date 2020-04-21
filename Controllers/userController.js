@@ -1,12 +1,13 @@
 var bodyParser = require('body-parser');
 var passport = require('passport');
+var fs = require('fs');
 
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 const methodOverride = require("method-override");
 
-var fileUpload = require('express-fileupload');
+//var fileUpload = require('express-fileupload');
 //var busboy = require("then-busboy");
 
 
@@ -17,7 +18,7 @@ module.exports = function(app){
     app.use(passport.initialize());
     app.use(passport.session());
 
-    app.use(fileUpload());
+    //app.use(fileUpload());
 
     app.use(bodyParser.json());
 
@@ -49,11 +50,12 @@ module.exports = function(app){
    /* --------------------------------------------------------------------------------------------------------------*/ 
         /*  RETURN THE USERS LISTE PAGE */
     app.get('/usersList', function(req, res){
+        var title="liste utilisateurs";
         let users = "SELECT * FROM user";
         db.query(users, function(err, result){
             if(err) throw err;
            
-            res.render('admin/users/usersList',{data: result});
+            res.render('admin/users/usersList',{data: result,title});
 
         })
     
@@ -61,11 +63,12 @@ module.exports = function(app){
 
         /*  RETURN THE CREATE USER PAGE */
     app.get('/usersList/create', function(req, res){
+        var title="Nouveau utilisateur";
         let prof = "SELECT * FROM profile ";
         db.query(prof, function(err, result){
             if(err) throw err;
            
-            res.render('admin/users/create',{data: result});
+            res.render('admin/users/create',{data: result,title});
 
         })
         
@@ -113,7 +116,7 @@ module.exports = function(app){
             req.session.message = {
                 type: 'success',
                 intro: 'Success:',
-                message: 'profile créer!'
+                message: 'Utilisateur créer!'
             }
              
         res.redirect('/usersList');
@@ -132,8 +135,12 @@ module.exports = function(app){
    });
 
    /** RETURN THE EDIT USER PAGE */
-   app.get('/edit/user/:id', function(req, res){
+   app.get('/edit/user/:id', urlencodedParser, function(req, res){
        var id = req.params.id;
+       var edit = req.body.id;
+       console.log(edit)
+       if(edit){
+       var title="Modifier utilisateur";
        let user = "select * from user where id_user = "+id+"";
        db.query(user, function(err, result){
            if(err) throw err;
@@ -142,9 +149,13 @@ module.exports = function(app){
         db.query(prof, function(req, result1){
             if(err) throw err;
 
-         res.render('admin/users/edit',{data: result, data1: result1});
+         res.render('admin/users/edit',{data: result, data1: result1,title});
         })
        })
+    }
+    else{
+        return res.status(500).send(err);
+    }
    });
 
    /**STORE THE NEW USER UPDATE */
@@ -204,7 +215,7 @@ module.exports = function(app){
     req.session.message = {
         type: 'success',
         intro: 'Success:',
-        message: 'profile créer!'
+        message: 'User modifier avec successé!'
     }
      
 res.redirect('/usersList');
@@ -215,19 +226,35 @@ res.redirect('/usersList');
    /**DELETE A USER */
    app.delete('/delete/profile/:id', function(req, res){
        var id= req.params.id;
+
+    let img_del= "SELECT photo FROM user WHERE id_user= "+id+"";
+    db.query(img_del,function(err,result){
+        if(err) throw err;
+
+        fs.unlink('static/admin/user-images/'+result[0].photo, function (err) {
+            if (err) throw err;
+            // if no error, file has been deleted successfully
+            console.log('File deleted!');
+        });
+    })
        let del = "DELETE FROM user WHERE id_user = "+id+"";
+       
        db.query(del,function(err, result){
            if(err) throw err;
+
            req.session.message = {
             type: 'deleted',
             intro: 'Deleted:',
-            message: 'Profile supprimer'
+            message: 'Utilisateur supprimer'
          }
         
         res.redirect('/usersList');
        })
 
    });
+
+  
+   
     
 };
 

@@ -2,11 +2,15 @@ var express = require('express');
 var app = express();
 var mysql = require('mysql');
 var bodyparser = require('body-parser');
+var fileUpload = require('express-fileupload');
 
 var operationController = require('./Controllers/operationController');
 var userController = require('./Controllers/userController');
 var profileController = require('./Controllers/profileController');
 var loginController = require('./Controllers/loginController');
+var documentController = require('./Controllers/documentController');
+
+app.use(fileUpload());
 
 // Authentification (login)
 var LocalStrategy = require('passport-local').Strategy;
@@ -75,7 +79,8 @@ app.use((req, res, next)=>{
 
 app.use((req, res, next)=>{
     res.locals.user_id = req.session.user_id;
-    res.locals.photo = req.session.photo
+    res.locals.photo = req.session.photo;
+    res.locals.profile = req.session.profile;
    // delete req.session.user_id;
   //  delete req.session.photo;
     next();
@@ -99,6 +104,8 @@ profileController(app);
 //fire login controller
 loginController(app);
 
+//fire documents controller
+documentController(app);
 
 
 //set up the template engine
@@ -128,8 +135,9 @@ const redirectHome = (req, res, next)=>{
 app.get('/home', redirectLogin, function(req, res){
     //console.log(req.user);
     //console.log(req.isAuthenticated())
+    var title='HOME'
      console.log(req.session.user_id)
-    res.render('admin/dashboard');
+    res.render('admin/dashboard',{title});
 
 });
 

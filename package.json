@@ -13,6 +13,8 @@
     "body-parser": "^1.19.0",
     "connect-flash": "^0.1.1",
     "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "csurf": "^1.11.0",
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-fileupload": "^1.1.6",
@@ -20,12 +22,16 @@
     "express-handlebars": "^3.1.0",
     "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.0",
+    "fs": "0.0.1-security",
+    "html-docx-js": "^0.3.1",
     "method-override": "^3.0.0",
+    "morgan": "^1.10.0",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
     "route": "^0.2.5",
-    "then-busboy": "^4.4.0"
+    "then-busboy": "^4.4.0",
+    "url": "^0.11.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.2"

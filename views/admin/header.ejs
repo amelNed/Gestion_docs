@@ -6,7 +6,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Quixlab - Bootstrap Admin Dashboard Template by Themefisher.com</title>
+    
+     <% if(title){ %>
+    <title><%= title %></title>
+    <% } %>
+
+    
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="/static/admin/images/favicon.png">
     <!-- Pignose Calender -->
@@ -269,7 +274,7 @@
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="/opList">Liste des opérations</a></li>
-                            <% if(user_id) { %>
+                            <% if(profile === "admin") { %>
                             <li><a href="/opList/create">nouvelle opération</a></li>
                             <% } %>
                         </ul>

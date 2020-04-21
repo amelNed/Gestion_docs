@@ -31,20 +31,22 @@ module.exports = function(app){
         });
         });
 /*------------------------------------------------------------------------------------------------------------------------------------*/
-    app.get('/opList', authenticationMiddleware(), function(req, res){
+    app.get('/opList', function(req, res){
         var data ="SELECT * FROM operation";
+        var title="Liste opérations";
         db.query(data, (err, result)=> {
             if(err) throw err;
             //console.log(result);
             
-       res.render('admin/opList',{data: result});
+       res.render('admin/opList',{data: result,title});
             
        });
     });
 
     //Return create operation page
-    app.get('/opList/create', function(req, res){
-        res.render('admin/createop');
+    app.get('/opList/create', /*authenticationMiddleware(),*/function(req, res){
+      var title="Nouvelle opération"
+        res.render('admin/createop',{title});
  
      });
     
@@ -72,13 +74,14 @@ module.exports = function(app){
     
     //Return Edit operation page
     app.get('/modifyop/:id',urlencodedParser, function(req, res){
-
+    
+       var title="Modifier opération"
         var ops = "SELECT * FROM operation WHERE id_op = "+req.params.id+"";
         db.query(ops, (err, result)=> {
             if(err) throw err;
             //console.log(result);
             
-       res.render('admin/modifyop',{data: result});
+       res.render('admin/modifyop',{data: result,title});
             
        });
         

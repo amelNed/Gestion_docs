@@ -3,7 +3,7 @@ var passport = require('passport');
 
 
 
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
+var urlencodedParser = bodyParser.urlencoded({ extended: true });
 
 const methodOverride = require("method-override");
 
@@ -56,18 +56,29 @@ app.post('/login', urlencodedParser, redirectHome, function(request, response) {
     
   var password = request.body.password;
   var username = request.body.username;
-  //console.log("Username: "+username);
-  //console.log("Password: "+password);
+  
 
 	if (username && password) {
 		db.query('SELECT * FROM user WHERE (userName = ? OR email = ?) AND mdp = ?', [username, username, password], function(error, results, fields) {
 			if (results.length > 0) {
-			//	request.session.loggedin = true;
-      //	request.session.username = username;
+			
         request.session.user_id = results[0].id_user;
         request.session.photo = results[0].photo;
-        //console.log(results[0].photo)
-        response.redirect('/home');
+        // SELECT THE PROFILE OF THE USER
+
+        console.log("The user profile id: "+results[0].id_profile)
+        let proff= "SELECT nom FROM profile WHERE id_profile= '"+results[0].id_profile+"'";
+        db.query(proff, function(err, result1){
+          if(err) throw err;
+          
+          //console.log('Le nom du profile: '+result1[0].nom)
+          request.session.profile = result1[0].nom;
+          response.redirect('/home');
+      });
+         
+        
+        
+        
         
         
 				
@@ -106,11 +117,12 @@ app.get('/logout', redirectLogin, (req, res) => {
 /* Require the profile user authenticated page */ 
 app.get('/userProfile', function(req, res){
   user_id = req.session.user_id;
+  var title="Profile"
   let data = "SELECT * from user where id_user = "+user_id+"";
   db.query(data, function(err,result){
     if(err) throw err;
 
-    res.render('admin/users/profile',{data: result});
+    res.render('admin/users/profile',{data: result,title});
   })
 });
 

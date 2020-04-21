@@ -28,12 +28,13 @@ module.exports = function(app){
 /*--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
     /** Return the profile list page */    
     app.get('/profileList', function(req, res){
+        var title="Liste Profiles";
         let data = "SELECT * FROM profile";
         db.query(data, (err, result)=> {
             if(err) throw err;
             //console.log(result);
             
-            res.render('admin/profile/profileList',{data: result});
+            res.render('admin/profile/profileList',{data: result,title});
             
        });
     
@@ -41,13 +42,13 @@ module.exports = function(app){
 
     /* Return create page */
     app.get('/profileList/create', function(req, res){
-
+        
         let data = "SELECT * FROM operation";
         db.query(data, (err, result)=> {
             if(err) throw err;
             //console.log(result);
-            
-            res.render('admin/profile/create',{data: result});
+            var title= "Create Profile"
+            res.render('admin/profile/create',{data: result, title});
             
        });
         
@@ -101,8 +102,9 @@ module.exports = function(app){
    });
 
    //return page modification of profile
-   app.get('/edit/:id', function(req, res){
+   app.get('/edit/:id', urlencodedParser,function(req, res){
        var id= req.params.id;
+       var title= "Modify Profile"
     var data ="SELECT * FROM profile WHERE id_profile = "+id+"";
     db.query(data, (err, result)=> {
         if(err) throw err;
@@ -115,7 +117,7 @@ module.exports = function(app){
     db.query(data2, (err, result2)=> {
         if(err) throw err;
         
-   res.render('admin/profile/edit',{data: result, data1: result1, data2: result2});
+   res.render('admin/profile/edit',{data: result, data1: result1, data2: result2,title});
 });
 });
 });
@@ -190,8 +192,9 @@ app.put('/profile/update/:id', urlencodedParser,function(req, res){
    });
 
    //Show 
-   app.get('/show/profile/:id', function(req, res){
+   app.get('/show/profile/:id', urlencodedParser,function(req, res){
     var id= req.params.id;
+    var title= "Details Profile"
  var data ="SELECT * FROM profile WHERE id_profile = "+id+"";
  db.query(data, (err, result)=> {
      if(err) throw err;
@@ -204,7 +207,7 @@ var data2 ="SELECT * FROM avoir where id_profile = "+id+" ";
  db.query(data2, (err, result2)=> {
      if(err) throw err;
      
-res.render('admin/profile/show',{data: result, data1: result1, data2: result2});
+res.render('admin/profile/show',{data: result, data1: result1, data2: result2,title});
 });
 });
 });
