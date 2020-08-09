@@ -1,0 +1,136 @@
+<%- include("../../../views/admin/header"); %>
+
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left col-md-12">
+                        <h3><%= titre %> <%= nom_doc %></h3>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                          <div class="card bg-light mb-3">
+                              <div class="card-header"><h4></h4> </div>
+                              <div class="card-body">
+
+                                <% if(message){ %>
+                                  <div class="alert alert-warning"><%= message %></div>
+                                <% } %>
+
+
+                     
+                                <% if(type===1){ %>
+                         <form action="/user/acceptedDemande" method="POST" >
+                            <div class="form-row">
+
+                                <table>
+                                    <tr>
+                                        <td><b>Nom type document: </b></td>
+                                        <td style="text-align: center;"><%= nom_doc %></td>
+                                    </tr>
+
+                                    <tr>
+                                        <td><b>L'utilisateur a effectuer la demande: </b></td>
+                                        <td style="text-align: center;"><%= nom_user %></td>
+                                    </tr>
+                                 </table>
+
+                            
+
+                                  <input type="hidden" name="notifID" value="<%= id %>">
+                                  <input type="hidden" name="docname" value="<%= nom_doc %>">
+
+                                  
+
+                                  <% if(accepted===null || ( user_accept===user_id && id_profile ===profile_id)){ %>
+                                    <div class="form-group col-md-12">
+                                      <div class="col-md-6 offset-md-4">
+                                          <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-check-circle-o" >
+                                              Accepter
+                                            </i>
+                                          </button>
+                                          <!--a href="/home" class="btn btn-danger"><i class="fa fa-ban" > Home</i></a -->
+                                      </div>  </div>
+                                      <%}else{ %>
+                                        <div class="form-group col-md-12">
+                                          <div class="col-md-6 offset-md-4">
+                                              <button type="submit" class="btn btn-primary" disabled>
+                                                <i class="fa fa-check-circle-o" >
+                                                  Accepter
+                                                </i>
+                                              </button>
+                                              <!--a href="/home" class="btn btn-danger"><i class="fa fa-ban" > Home</i></a -->
+                                          </div>  </div>
+
+                                        <% } %>
+                                
+
+                            </div>
+                            </form>
+                         <!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->   
+                            <% } else if(type === 2){ %>
+
+                                <h3><b>Le fichier reçu:</b></h3>
+                                
+                                  <div>
+                                    <table class="table table-xs">
+                                      <thead>
+                                          <tr>
+                                              <th>Document name</th>
+                                              <th>Description</th>
+                                              <th>Size</th>
+                                            
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                        <% data.forEach(function (doc) { %>
+                                           <tr class="col-md-2">
+                                               <td></span><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/docx" >
+                                                <p><span><img src="/static/admin/icons/microsoft-word-2019--v2.png" >Télécharger : <a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
+                                              </object></td>
+                                               <td><span> <%= doc.description %>  </span></td>
+                                               <td><span>  </span></td>
+                                              
+                                               <td>
+                                                  <form action="#" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
+                                                     
+                                                     
+                                                      <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                                                      
+                                                  </form>
+                                              </td>
+                                           </tr>
+                                           <% }) %>
+                                          
+                                       </tbody>
+                                      
+                                   </table>
+                                   <a href="/home" class="btn btn-info"><i class="fa fa-home" >Acceuil</i></a>
+                                  
+                                  </div>
+                          
+                                
+
+                              <% } %>
+                     
+                    </div></div></div></div>
+
+                    </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>      
+
+<%- include("../../../views/admin/footer"); %>

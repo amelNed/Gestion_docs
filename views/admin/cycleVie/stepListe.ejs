@@ -1,0 +1,67 @@
+<%- include("../../../views/admin/header"); %>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left">
+                        <h3>Les cycles des documents</h3>
+                    </div>
+
+                    <% if(message){ %>
+                        <% if(message.type === 'success'){ %>
+                        <div class="alert alert-success">
+                            <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                          </div>
+                          <% } else if(message.type === 'deleted'){ %>
+                            <div class="alert alert-danger">
+                               <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                          <% }} %>
+
+                          
+                      <div class="pull-right">
+                        <a href="/admin/createdocycle" class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"> Ajouter </i></a>
+                      </div>
+                     
+                      
+
+                      <div>
+                      <table class="table table-xs">
+                       
+                        
+                            <% data.forEach(function (docs) { %>
+                             <tr class="col-md-2">
+                                 <td style="font-size: 15px" ><span><a href="#"><b><%= docs.nomdoc %></b></a></span></td>
+                                 
+                                
+                                 <td>
+                                    <form action="#" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer cet cycle')">
+                                       
+                                        <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"u></i></button>
+                      
+                                    </form>
+                                </td>
+                             </tr>
+
+                            
+                            
+                        
+                         <% }) %>
+                     </table>
+                    </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>     
+
+<%- include("../../../views/admin/footer"); %>

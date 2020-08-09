@@ -1,0 +1,71 @@
+<%- include("../../../views/admin/header"); %>
+
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left col-md-12">
+                        <h3>Demande du document</h3>
+                    </div>
+
+                    <div class="row">
+                      <div class="col-lg-12">
+                          <div class="card bg-light mb-3">
+                              <div class="card-header"><h4>Selectionner votre document</h4> </div>
+                              <div class="card-body">
+
+                                <% if(message){ %>
+                                  <div class="alert alert-warning"><%= message %></div>
+                                <% } %>
+                     
+                         <form action="/user/sendDemande" method="POST" >
+                            <div class="form-row">
+
+                                <div class="form-group col-md-12">
+                                    <label for=""><b>Les documents</b></label>
+                                    <select id="inputDocs" name="docs" class="form-control">
+                                        <% data.forEach(function(docs){ %>
+                                        <option><%= docs.nomdoc %></option>
+                                        <% }) %>
+                                      </select>
+                                  </div>
+
+                            
+
+                                  <input type="hidden" name="first" value="1">
+
+                                  
+
+                                    <div class="form-group col-md-12">
+                                      <div class="col-md-6 offset-md-4">
+                                          <button type="submit" class="btn btn-primary">
+                                            <i class="fa fa-check-circle-o" >
+                                              Valider
+                                            </i>
+                                          </button>
+                                          <a href="/home" class="btn btn-danger"><i class="fa fa-ban" > Home</i></a>
+                                      </div>  </div>
+                                
+
+                            </div>
+                            </form>
+                     
+                    </div></div></div></div>
+
+                    </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>      
+
+<%- include("../../../views/admin/footer"); %>

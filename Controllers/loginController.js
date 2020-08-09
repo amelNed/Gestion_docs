@@ -64,16 +64,37 @@ app.post('/login', urlencodedParser, redirectHome, function(request, response) {
 			
         request.session.user_id = results[0].id_user;
         request.session.photo = results[0].photo;
+        request.session.nom = results[0].nom;
+        request.session.prenom = results[0].prenom;
+        request.session.profile_id = results[0].id_profile;
         // SELECT THE PROFILE OF THE USER
 
         console.log("The user profile id: "+results[0].id_profile)
         let proff= "SELECT nom FROM profile WHERE id_profile= '"+results[0].id_profile+"'";
         db.query(proff, function(err, result1){
           if(err) throw err;
-          
-          //console.log('Le nom du profile: '+result1[0].nom)
-          request.session.profile = result1[0].nom;
-          response.redirect('/home');
+
+        //console.log('Le nom du profile: '+result1[0].nom)
+        request.session.profile = result1[0].nom;
+        let notif = "SELECT n.read_at demande_id, data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE n.id_user="+request.session.user_id+" and n.id_notificaton = ns.id_notif ORDER BY created_at DESC"
+        db.query(notif, (err1,result2)=>{
+          if(err1) throw err1;
+        
+          request.session.notifs = result2;
+          console.log("Nombre notifications: "+request.session.notifs.length)
+
+          let onlynotread = "select n.read_at demande_id, data, created_at, ns.id_notif, n.type_notif from notifier n, notifications ns where n.id_user="+request.session.user_id+" and n.id_notificaton = ns.id_notif and n.read_at IS NULL and ns.read_at IS NULL ORDER BY created_at DESC"
+          db.query(onlynotread, (err3, result3)=>{
+            if(err3) throw err3;
+   
+            request.session.notReadNotifs = result3;
+            console.log("Nombre notifications: "+request.session.notReadNotifs.length)
+            response.redirect('/home');
+
+          })
+         
+        
+        })
       });
          
         
@@ -107,8 +128,9 @@ app.post('/login', urlencodedParser, redirectHome, function(request, response) {
 // route for user logout
 app.get('/logout', redirectLogin, (req, res) => {
    req.logout();
+  // res.clearCoockie('ide');
    req.session.destroy();
-   //res.clearCoockie('ide');
+   
    res.redirect('/login');
 
   

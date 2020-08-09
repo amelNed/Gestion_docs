@@ -138,8 +138,10 @@ module.exports = function(app){
    app.get('/edit/user/:id', urlencodedParser, function(req, res){
        var id = req.params.id;
        var edit = req.body.id;
+
+       //if(id===req.session.user_id || id=== admin_id) //for not everyone can access the update page only the user or the admin
        console.log(edit)
-       if(edit){
+       if(edit || id){
        var title="Modifier utilisateur";
        let user = "select * from user where id_user = "+id+"";
        db.query(user, function(err, result){

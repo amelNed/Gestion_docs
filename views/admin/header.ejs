@@ -150,53 +150,29 @@
                         </li>
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
                                 <i class="mdi mdi-bell-outline"></i>
-                                <span class="badge badge-pill gradient-2">3</span>
+                                <span class="badge badge-pill gradient-2"><%= notReadNotifs.length %></span>
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class="">2 New Notifications</span>  
+                                    <span class=""> New Notifications</span>  
                                     <a href="javascript:void()" class="d-inline-block">
-                                        <span class="badge badge-pill gradient-2">5</span>
+                                        <span class="badge badge-pill gradient-2"><%= notReadNotifs.length %></span>
                                     </a>
                                 </div>
                                 <div class="dropdown-content-body">
                                     <ul>
+                                       <% notifs.forEach(function (notif) { %>
+
                                         <li>
-                                            <a href="javascript:void()">
+                                            <a href="/user/notifDtails/<%= notif.id_notif %>">
                                                 <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
                                                 <div class="notification-content">
-                                                    <h6 class="notification-heading">Events near you</h6>
-                                                    <span class="notification-text">Within next 5 days</span> 
+                                                    <h6 class="notification-heading"><%= notif.data %></h6>
+                                                    <span class="notification-text"><%= notif.created_at %></span> 
                                                 </div>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
-                                                <div class="notification-content">
-                                                    <h6 class="notification-heading">Event Started</h6>
-                                                    <span class="notification-text">One hour ago</span> 
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
-                                                <div class="notification-content">
-                                                    <h6 class="notification-heading">Event Ended Successfully</h6>
-                                                    <span class="notification-text">One hour ago</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i class="icon-present"></i></span>
-                                                <div class="notification-content">
-                                                    <h6 class="notification-heading">Events to Join</h6>
-                                                    <span class="notification-text">After two days</span> 
-                                                </div>
-                                            </a>
-                                        </li>
+                                        <% }) %>
                                     </ul>
                                     
                                 </div>
@@ -295,6 +271,16 @@
                         <ul aria-expanded="false">
                             <li><a href="/usersList">Liste des utilisateurs</a></li>
                             <li><a href="/usersList/create">Nouveau utilisateur</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
+                            <i class="icon-note menu-icon"></i><span class="nav-text">Documents</span>
+                        </a>
+                        <ul aria-expanded="false">
+                            <li><a href="#">Liste des Documents</a></li>
+                            <li><a href="#">Nouveau static document</a></li>
                         </ul>
                     </li>
 

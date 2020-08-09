@@ -1,0 +1,124 @@
+<%- include("../../../views/admin/header"); %>
+
+<script>
+  function verify(){
+    if(document.getElementById("uploadFile").value ==""){
+      alert("You should select a word file");
+    }
+
+    
+  }
+  
+</script>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    
+                     
+                    <div>
+                    <% if(message){ %>
+                        <% if(message.type === 'success'){ %>
+                        <div class="alert alert-success">
+                            <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                          </div>
+                          <% } else if(message.type === 'error'){ %>
+                            <div class="alert alert-danger">
+                               <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                          <% }} %>
+                        </div>
+                               <hr>
+
+                               <% if(docExist !== null){ %>
+                                <h3><b>Le fichier reçu:</b></h3>
+                                
+                                  <div>
+                                    <table class="table table-xs">
+                                      <thead>
+                                          <tr>
+                                              <th>Document name</th>
+                                              <th>Description</th>
+                                              <th>Size</th>
+                                            
+                                          </tr>
+                                      </thead>
+                                      <tbody>
+                                          
+                                           <tr class="col-md-2">
+                                               <td></span><object data="/static/admin/documents/<%= docName %>" type="application/docx" >
+                                                <p><span><img src="/static/admin/icons/microsoft-word-2019--v2.png" >Télécharger : <a href="/static/admin/documents/<%= docName %>"> <%= docName %> </a></p>
+                                              </object></td>
+                                               <td><span> <%= description %>  </span></td>
+                                               <td><span>  </span></td>
+                                              
+                                               <td>
+                                                  <form action="/delete/document/<%= docExist %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
+                                                     
+                                                     
+                                                      <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                                                      
+                                                  </form>
+                                              </td>
+                                           </tr>
+                                          
+                                       </tbody>
+                                      
+                                   </table>
+                                  
+                                  </div>
+                          
+                                 <% } %>
+                                  <hr>
+                                  <h3><b>Envoyer votre fichier:</b></h3>
+
+                          <form action="/send/document" method="POST" enctype="multipart/form-data">
+                            <div class="form-row">
+
+                                    <div class="form-group col-md-12">
+                                      <label for="exampleFormControlFile1">Upload document</label>
+                                      <input type="file" id="uploadFile" class="form-control-file" name="document">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                      <label for="exampleFormControlFile1">Description</label><br>
+                                      <textarea  rows="4" cols="50" name="description"></textarea>
+                                    </div>
+                                   
+                                    <input type="hidden" name="notifID" value="<%= notif_id %>">
+                                   <input type="hidden" name="docname" value="<%= doc_name %>">
+
+
+                                    <div class="form-group col-md-12">
+                                      <div class="col-md-6 offset-md-4">
+                                          <button type="submit" class="btn btn-primary" onclick="verify()">
+                                            <i class="fa fa-check-circle-o" >
+                                              Terminer et envoyer
+                                            </i>
+                                          </button>
+                                          <a href="/home" class="btn btn-danger"><i class="fa fa-ban" > Annuler</i></a>
+                                      </div>  </div>
+                                
+
+                            </div>
+                          </div>
+                          <hr>
+                            </form>
+                
+                           
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>     
+
+<%- include("../../../views/admin/footer"); %>
