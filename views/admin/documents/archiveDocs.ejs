@@ -1,0 +1,89 @@
+<%- include("../../../views/admin/header"); %>
+
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left">
+                       
+                    </div>
+
+                    <% if(message){ %>
+                        <% if(message.type === 'success'){ %>
+                        <div class="alert alert-success">
+                            <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                          </div>
+                          <% } else if(message.type === 'deleted'){ %>
+                            <div class="alert alert-danger">
+                               <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                          <% }} %>
+
+                          
+                     
+
+
+                          <h3><b>Documents archivés:</b></h3>
+                                
+                          <div>
+                            <table class="table table-xs">
+                              <thead>
+                                  <tr>
+                                      <th>Document name</th>
+                                      <th>Description</th>
+                                      <th>Date</th>
+                                      
+                                    
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                <% data.forEach(function (doc) { %>
+                                   <tr class="col-md-2">
+                                       <td></span><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/docx" >
+                                        <p><span><img src="/static/admin/icons/microsoft-word-2019--v2.png" ><a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
+                                      </object></td>
+                                       <td><span> <%= doc.description %>  </span></td>
+                                       <td><span> <%= doc.created_at %>  </span></td>
+                                       
+                                      
+                                       <td>
+                                          <form action="#" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
+                                             
+                                             
+                                              <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                                              
+                                          </form>
+                                      </td>
+                                   </tr>
+                                   <% }) %>
+                                  
+                               </tbody>
+                              
+                           </table>
+                           <a href="/admin/dashboard" class="btn btn-info"><i class="fa fa-home" >Acceuil</i></a>
+                          
+                          </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>     
+
+<%- include("../../../views/admin/footer"); %>

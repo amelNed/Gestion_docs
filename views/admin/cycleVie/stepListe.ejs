@@ -1,5 +1,14 @@
 <%- include("../../../views/admin/header"); %>
 
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+        </ol>
+    </div>
+</div>
+
 <div class="content-body">
 
     <div class="container-fluid mt-3">
@@ -12,7 +21,7 @@
                 <div class="active-member">
                     <div class="table-responsive">
                     <div class="pull-left">
-                        <h3>Les cycles des documents</h3>
+                        <h3>Les cycles de type de document</h3>
                     </div>
 
                     <% if(message){ %>
@@ -36,25 +45,26 @@
                       <div>
                       <table class="table table-xs">
                        
-                        
+                       
                             <% data.forEach(function (docs) { %>
                              <tr class="col-md-2">
+                                 <td>
+                                    <input type="checkbox"  id="<%= docs.id_type %>" name="id_type" value=" <%=docs.id_type %>" >
+                                </td>
                                  <td style="font-size: 15px" ><span><a href="#"><b><%= docs.nomdoc %></b></a></span></td>
                                  
                                 
                                  <td>
-                                    <form action="#" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer cet cycle')">
-                                       
-                                        <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"u></i></button>
+                                    <form action="/delete/docycle/<%= docs.id_type %>?_method=DELETE" method="post" onsubmit=" return confirm('Voulez vous vraiment supprimer cet cycle');">
+                                        <a href="/admin/detailsDoc/<%= docs.id_type %>" class="btn btn-primary" title="Details"><i class="fa fa-align-justify"></i></a>
+                                        <button type="submit" class="btn btn-danger" title="supprimer" ><i class="fa fa-trash-o fa-fw"u></i></button>
                       
                                     </form>
                                 </td>
                              </tr>
 
-                            
-                            
-                        
-                         <% }) %>
+                              <% }) %>
+                                  
                      </table>
                     </div>
 

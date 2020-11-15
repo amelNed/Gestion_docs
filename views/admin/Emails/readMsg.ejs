@@ -1,0 +1,149 @@
+<%- include("../../../views/admin/header"); %>
+
+
+
+<div class="content-body">
+
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+                <li class="breadcrumb-item active"><a href="javascript:void(0)">Home</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="email-left-box"><a href="/newEmail" class="btn btn-primary btn-block">Nouveau Message</a>
+                            <div class="mail-list mt-4"><a href="/messagesnonlus" class="list-group-item border-0 text-primary p-r-0"><i class="fa fa-inbox font-18 align-middle mr-2"></i>Messages Non Lus <span class="badge badge-primary badge-sm float-right m-t-5"><%= nbreNoRead %></span> </a>
+                                <a href="/messageslus" class="list-group-item border-0 p-r-0"><i class="fa fa-paper-plane font-18 align-middle mr-2"></i>Messages Lus</a> 
+                                <a href="/messageEnvoyes" class="list-group-item border-0 p-r-0"><i class="mdi mdi-file-document-box font-18 align-middle mr-2"></i>Messages Envoyé</a>
+                            </div>
+
+                          
+                        </div>
+
+                        <% if(message){ %>
+                            <% if(message.type === 'success'){ %>
+                            <div class="alert alert-success">
+                                <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                              <% } else if(message.type === 'deleted'){ %>
+                                <div class="alert alert-danger">
+                                   <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                                  </div>
+                              <% }} %>
+
+
+                        <div class="email-right-box">
+                            <h2><b>Message</b></h2>
+                      
+                            <% if(msgtype===1){ %>
+                            <% data.forEach(function (msg) { %>
+                                <div class="toolbar" role="toolbar">
+                                    <div class="btn-group m-b-20">
+    
+                                        <form action="/delete/message/<%= msg.id %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce message?')">
+                                            <input type="hidden" name="msgtype" value="<%= msgtype %>">
+                                            <button type="submit" class="btn btn-light"><i class="fa fa-trash"></i>
+                                        </button>
+                                        </form>
+                                    </div>
+    
+    
+    
+                                </div>
+
+                            <div class="read-content">
+                                <div class="media pt-5">
+                                    <!--img class="mr-3 rounded-circle" src="images/avatar/1.jpg"-->
+                                    <div class="media-body">
+                                        <h5 class="m-b-3"><span>Nom Expediteur: </span><%= msg.nom %></h5>
+                                        <p class="m-b-2"><span>Date: </span><%=  moment(msg.created_at).format('DD-MM-YYYY') %></p>
+                                    </div>
+                                    
+                                </div>
+                                <hr>
+                                <div class="media mb-4 mt-1">
+                                    <div class="media-body"><span class="float-right"><%=  moment(msg.created_at).format('HH:MM') %></span>
+                                        <h4 class="m-b-3">Subject: <span class="m-0 text-primary"><%= subContent %></span></h4><small class="text-muted">From: <%= msg.email %></small>
+                                    </div>
+                                </div>
+                                <hr>
+                                <h4>Message</h4>
+                                <hr>
+                                <p ><%= msgContent %></p>
+                                <hr><br><br><br>
+                                <!--h6 class="p-t-15"><i class="fa fa-download mb-2"></i> Attachments <span>(3)</span></h6>
+                                <div class="row m-b-30">
+                                    <div class="col-auto"><a href="#" class="text-muted">My-Photo.png</a>
+                                    </div>
+                                    <div class="col-auto"><a href="#" class="text-muted">My-File.docx</a>
+                                    </div>
+                                    <div class="col-auto"><a href="#" class="text-muted">My-Resume.pdf</a>
+                                    </div>
+                                </div>
+                                <hr-->
+                                <a href="/messagesnonlus" class="btn btn-danger"><i class="fa fa-undo" > Messages reçus</i></a>
+                        </div>
+                        <% }) %>
+                        <% } else if(msgtype===2){ %>
+
+                            <% data.forEach(function (msg) { %>
+                                <div class="toolbar" role="toolbar">
+                                    <div class="btn-group m-b-20">
+    
+                                        <form action="/delete/message/<%= msg.id %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce message?')">
+                                            <input type="hidden" name="msgtype" value="<%= msgtype %>">
+                                            <button type="submit" class="btn btn-light"><i class="fa fa-trash"></i>
+                                        </button>
+                                        </form>
+                                    </div>
+    
+    
+    
+                                </div>
+
+                                <div class="read-content">
+                                    <div class="media pt-5">
+                                        <!--img class="mr-3 rounded-circle" src="images/avatar/1.jpg"-->
+                                        <div class="media-body">
+                                            <h5 class="m-b-3"><span>Nom Expediteur: </span><%= username %></h5>
+                                            <p class="m-b-2"><span>Date: </span><%=  moment(msg.sended_date).format('DD-MM-YYYY') %></p>
+                                        </div>
+                                        
+                                    </div>
+                                    <hr>
+                                    <div class="media mb-4 mt-1">
+                                        <div class="media-body"><span class="float-right"><%=  moment(msg.sended_date).format('HH:MM') %></span>
+                                            <h4 class="m-b-3">Subject: <span class="m-0 text-primary"><%= unescape(msg.subject) %></span></h4><small class="text-muted">TO: <%= username %></small>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <h4>Message</h4>
+                                    <hr>
+                                    <p ><%= unescape(msg.message) %></p>
+                                    <hr><br><br><br>
+                                    
+                                    <a href="/messagesnonlus" class="btn btn-danger"><i class="fa fa-undo" > Messages reçus</i></a>
+                            </div>
+
+                            <% }) %>
+                            <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+
+
+
+
+<%- include("../../../views/admin/footer"); %>

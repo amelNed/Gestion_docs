@@ -1,5 +1,14 @@
 <%- include("../../../views/admin/header"); %>
 
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+        </ol>
+    </div>
+</div>
+
 <div class="content-body">
 
     <div class="container-fluid mt-3">
@@ -50,9 +59,9 @@
                                  <td><span><%= user.userName %></span></td>
                                 
                                  <td>
-                                    <form action="/delete/profile/<%= user.id_user %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer cet achat?')">
+                                    <form action="/delete/user/<%= user.id_user %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer cet achat?')">
                                        
-                                        <a href="#" class="btn btn-primary" title="Details"><i class="fa fa-align-justify"></i></a>
+                                        <a href="/displayResultU/<%= user.id_user %>" class="btn btn-primary" title="Details"><i class="fa fa-align-justify"></i></a>
                                         <a href="/edit/user/<%= user.id_user %>" class="btn btn-info" title="Modifier"><i class="fa fa-pencil-square-o"></i></a>
                                         <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
                       

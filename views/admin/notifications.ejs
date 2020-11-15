@@ -1,0 +1,105 @@
+<%- include("header"); %>
+
+<div class="row page-titles mx-0">
+  <div class="col p-md-0">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+      </ol>
+  </div>
+</div>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left col-md-12">
+                        <h3>Notifications</h3>
+                    </div>
+
+                    <% var i=0; data.forEach(function (notif) { %>
+                      <form action="/admin/acceptenotif" method="POST">
+                    <div class="row border bg-light">
+                        <div class="col-sm-12">
+                          <div class="card">
+                            <div class="card-body">
+                              <h5 class="card-title"><%= notif.data %></h5>
+                              <p class="card-text"><%=  moment(notif.created_at).format('DD-MM-YYYY') %> <br>  <%= moment(notif.created_at).format('HH:MM') %></p>
+                              
+                              <input type="hidden" value="<%= nom_doc2[i] %>"  name="nom_doc">
+                              <input type="hidden" value="<%= notif.id_notif %>" name="notifID">
+                              <input type="hidden" value="2" name="typePage">
+                              <!--a href="/user/notifDtails/<%= notif.id_notif %>" class="btn btn-primary">Accepter</a-->
+                              <button type="submit"  class="btn btn-primary" >Accepter</button>
+                            </div>
+                          </div>
+                        </div>
+                        </div>
+                      </form>
+                        <% }) %>
+
+                        <% var i=0; data1.forEach(function (notif) { %>
+                          <form action="/user/acceptedDemande" method="POST">
+                            <div class="row border bg-white">
+                                <div class="col-sm-12">
+                                  <div class="card">
+                                    <div class="card-body">
+                                      <h5 class="card-title"><%= notif.data %></h5>
+                                      <p class="card-text"><%=  moment(notif.created_at).format('DD-MM-YYYY') %> <br>  <%= moment(notif.created_at).format('HH:MM') %></p>
+                                      
+                                      <input type="hidden" value="<%= nom_doc[i] %>" name="nom_doc">
+                                        <input type="hidden" value="<%= notif.id_notif %>" name="notifID">
+                                      <button type="submit"  class="btn btn-success" >Traiter</button>
+                                      <!--a href="/user/notifDtails/<%= notif.id_notif %>" class="btn btn-primary">Traiter</a-->
+                                    </div>
+                                  </div>
+                                </div>
+                                </div>
+                              </form>
+
+                        <% }) %>
+
+                        <% var i=0; data3.forEach(function (notif) { %>
+                          <form action="#" method="POST">
+                        <div class="row border bg-light">
+                            <div class="col-sm-12">
+                              <div class="card">
+                                <div class="card-body">
+                                  <h5 class="card-title"><%= notif.data %></h5>
+                                  <p class="card-text"><%=  moment(notif.created_at).format('DD-MM-YYYY') %> <br>  <%= moment(notif.created_at).format('HH:MM') %></p>
+                                  
+                                  <input type="hidden" value="<%= nom_doc3[i] %>"  name="nom_doc">
+                                  <input type="hidden" value="<%= notif.id_notif %>" name="notifID">
+                                  <input type="hidden" value="2" name="typePage">
+                                  <!--a href="/user/notifDtails/<%= notif.id_notif %>" class="btn btn-primary">Accepter</a-->
+                                  <!--button type="submit"  class="btn btn-primary" >Accepter</button-->
+                                </div>
+                              </div>
+                            </div>
+                            </div>
+                          </form>
+                            <% }) %>
+                        
+                    
+
+                        </div>
+    
+                        </div>
+        </div>
+        </div></div> </div></div>
+        </div> 
+        </div>      
+    
+
+
+
+
+
+<%- include("footer"); %>

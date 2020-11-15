@@ -1,0 +1,111 @@
+<%- include("../../../views/admin/header"); %>
+
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left">
+                        
+                    </div>
+
+                    <% if(message){ %>
+                        <% if(message.type === 'success'){ %>
+                        <div class="alert alert-success">
+                            <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                          </div>
+                          <% } else if(message.type === 'deleted'){ %>
+                            <div class="alert alert-danger">
+                               <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                          <% }} %>
+
+                          
+                     
+
+
+                          <h3><b>Mes documents:</b></h3>
+                                
+                          <div>
+                            <table class="table table-xs">
+                              <thead>
+                                  <tr>
+                                      <th>Document name</th>
+                                      <th>Description</th>
+                                      <th>Date</th>
+                                      <% if(profile_id===5){ %>
+                                      <th>Utilisateur</th>
+                                      <% } %>
+                                      <th>Archiver</th>
+                                    
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                <% var i=0; data.forEach(function (doc) { %>
+                                   <tr class="col-md-2">
+                                       <% if(doc.mime === "application/vnd.openxmlformats-officedocument.word"){ %>
+                                       <td><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/docx" >
+                                        <p><span><img src="/static/admin/icons/microsoft-word-2019--v2.png" ></span><a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
+                                      </object></td>
+                                      <% } if(doc.mime ==="application/pdf"){ %>
+                                        <td><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/docx" >
+                                            <p><span><img src="/static/admin/icons/15519179861536080156-512.png" ></span><a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
+                                          </object></td>
+                                          <% } if(doc.mime==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){ %>
+                                            <td><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/vnd.ms-excel" >
+                                                <p><span><img src="/static/admin/icons/microsoft-excel-2019--v1.png" ></span><a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
+                                              </object></td>
+                                              <% } %>
+                                              
+                                       <td><span> <%= doc.description %>  </span></td>
+                                       <td><span><%=  moment(doc.created_date).format('DD-MM-YYYY') %> <br> <%=  moment(doc.created_date).format('HH:MM') %>  </span></td>
+
+                                       <% if(profile_id===5 && datauser){ %>
+                                        <td><span> <%= datauser[i].nom %> <%= datauser[i].prenom %>  </span></td>
+                                        <% } %>
+
+                                       <% if(archive!==0){ %>
+                                       <td> <a href="/sendtoarchieve/<%= doc.id_doc %>" class="btn btn-primary" title="Archiver"><i class="fa fa-file-archive-o"></i></a></td>
+                                        <% } %>
+                                       <% if(supprimer!==0){ %>
+                                       <td>
+                                          <form action="/delete/doc/<%= doc.id_doc %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
+                                             
+                                             
+                                              <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                                              
+                                          </form>
+                                      </td>
+                                      <% } %>
+                                   </tr>
+                                   <% i++; }) %>
+                                  
+                               </tbody>
+                              
+                           </table>
+                           <a href="/admin/dashboard" class="btn btn-info"><i class="fa fa-home" >Acceuil</i></a>
+                          
+                          </div>
+
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>     
+
+<%- include("../../../views/admin/footer"); %>

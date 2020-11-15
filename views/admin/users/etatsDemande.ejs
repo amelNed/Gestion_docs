@@ -1,0 +1,55 @@
+<%- include("../../../views/admin/header"); %>
+
+<div class="row page-titles mx-0">
+  <div class="col p-md-0">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+      </ol>
+  </div>
+</div>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left col-md-12">
+                        <h3>L'Etat de Vos Demandes</h3>
+                    </div>
+
+                    <% for (var i in pourcent){ %>
+                       
+                          <div class="row border bg-white">
+                              <div class="col-sm-12">
+                                <div class="card">
+                                  <div class="card-body">
+                                    <h5 class="card-title" style="color:slateblue;">Etape Courante De La demande: <%= numEtape[i] %></h5>
+                                    <p class="card-text"> <h6>Demande n<%= parseInt(i,10)+1 %>:   <b style="font-size: 25px;"><%- pourcent[i] %>%</b></h6> <span class="pull-right"><%=  moment(data[i].created_date).format('DD-MM-YYYY') %></span></p>
+                                    
+                                   
+                                    
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                            </form>
+
+                      <% } %>
+
+
+                </div>
+    
+            </div>
+</div>
+</div></div> </div></div>
+</div> 
+</div>      
+
+<%- include("../../../views/admin/footer"); %>

@@ -1,6 +1,7 @@
 var bodyParser = require('body-parser');
 var passport = require('passport');
 var fs = require('fs');
+var moment = require('moment')
 
 
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
@@ -10,7 +11,30 @@ const methodOverride = require("method-override");
 //var fileUpload = require('express-fileupload');
 //var busboy = require("then-busboy");
 
-
+/** Verify if you're connected or no  */
+var redirectLogin = (req, res, next)=>{
+    if(!req.session.user_id){
+        res.redirect('/login');
+    }else{
+        next();
+    }
+}
+/**REFRESHING NOTIFS */
+var refreshNotif = (req,res,next)=>{
+    let notif= "SELECT n.read_at readatNotifier, ns.read_at readNotifs ,demande_id, ns.data data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE (n.id_user="+req.session.user_id+") and (n.id_notificaton = ns.id_notif) and  ((n.type_notif=1 and ns.updated_at IS NULL and (ns.userIDaccepted="+req.session.user_id+" or ns.userIDaccepted=0)) or (n.type_notif=2 and n.read_at IS NULL)) ORDER BY created_at DESC "
+    db.query(notif, (err1,result2)=>{
+      if(err1) throw err1;
+  
+      req.session.notifs=result2;
+      let onlynotread = "SELECT n.read_at readatNotifier, ns.read_at readNotifs ,demande_id, data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE (n.id_user="+req.session.user_id+") and (n.id_notificaton = ns.id_notif) and n.type_notif=1 and n.read_at IS NULL and ((ns.updated_at IS NULL and (ns.userIDaccepted="+req.session.user_id+" or ns.userIDaccepted=0)) or (n.type_notif=2 and n.read_at IS NULL)) "
+            db.query(onlynotread, (err3, result3)=>{
+              if(err3) throw err3;
+  
+              req.session.notReadNotifs=result3;
+              next();
+            });
+    });
+  }
 
 
 module.exports = function(app){
@@ -49,26 +73,32 @@ module.exports = function(app){
 
    /* --------------------------------------------------------------------------------------------------------------*/ 
         /*  RETURN THE USERS LISTE PAGE */
-    app.get('/usersList', function(req, res){
+    app.get('/usersList', redirectLogin,refreshNotif,function(req, res){
         var title="liste utilisateurs";
         let users = "SELECT * FROM user";
         db.query(users, function(err, result){
-            if(err) throw err;
-           
-            res.render('admin/users/usersList',{data: result,title});
+            if(err) {res.render('admin/errorPage',{err:err})}
+           else{
+
+            res.render('admin/users/usersList',{data: result,title,moment:moment});
+           }
+            
 
         })
     
     });
 
         /*  RETURN THE CREATE USER PAGE */
-    app.get('/usersList/create', function(req, res){
+    app.get('/usersList/create', redirectLogin,refreshNotif,function(req, res){
         var title="Nouveau utilisateur";
         let prof = "SELECT * FROM profile ";
         db.query(prof, function(err, result){
-            if(err) throw err;
-           
-            res.render('admin/users/create',{data: result,title});
+            if(err) {res.render('admin/errorPage',{err:err})}
+           else{
+            res.render('admin/users/create',{data: result,title,moment:moment});
+
+           }
+            
 
         })
         
@@ -104,11 +134,11 @@ module.exports = function(app){
 
          return res.status(500).send(err);
          db.query(idpro, function(err, result){
-             if(err) throw err;
-            
+             if(err) {res.render('admin/errorPage',{err:err})}
+            else{
                 let userr= "INSERT INTO user(nom, prenom, ville, email, numTel, numCarte, address, userName, mdp, photo, id_profile, date_creation) VALUES('"+nom+"', '"+prenom+"', '"+ville+"', '"+email+"', '"+numTel+"', '"+numCarte+"', '"+address+"', '"+username+"', '"+pw+"', '"+img_name+"', "+result[0].id_profile+", now())";
                 db.query(userr, function(err, result1){
-                    if(err) throw err;
+                    if(err) {res.render('admin/errorPage',{err:err})}
                 });
               
             
@@ -121,6 +151,9 @@ module.exports = function(app){
              
         res.redirect('/usersList');
 
+            }
+                
+
         });
 
           
@@ -128,36 +161,46 @@ module.exports = function(app){
             });
       } else {
          message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
-         res.render('/usersList/create',{message: message});
+         res.render('/usersList/create',{message: message,moment:moment});
        }
       
       
    });
 
    /** RETURN THE EDIT USER PAGE */
-   app.get('/edit/user/:id', urlencodedParser, function(req, res){
+   app.get('/edit/user/:id',redirectLogin,refreshNotif,urlencodedParser, function(req, res){
        var id = req.params.id;
        var edit = req.body.id;
 
-       //if(id===req.session.user_id || id=== admin_id) //for not everyone can access the update page only the user or the admin
-       console.log(edit)
-       if(edit || id){
+       console.log('user id '+req.session.user_id)
+       console.log(id==req.session.user_id )
+       console.log(id==2 )
+
+       //if(id===req.session.user_id || req.session.user_id=== 2) //for not everyone can access the update page only the user or the admin
+     
+       if(id==req.session.user_id || req.session.user_id==2){
+        
        var title="Modifier utilisateur";
        let user = "select * from user where id_user = "+id+"";
        db.query(user, function(err, result){
-           if(err) throw err;
+           if(err) {res.render('admin/errorPage',{err:err})}
         
         let prof = "SELECT * from profile";
         db.query(prof, function(req, result1){
-            if(err) throw err;
+            if(err) {res.render('admin/errorPage',{err:err})}
 
-         res.render('admin/users/edit',{data: result, data1: result1,title});
+            else{
+                res.render('admin/users/edit',{data: result, data1: result1,title,moment:moment});
+
+            }
+         
         })
        })
-    }
-    else{
-        return res.status(500).send(err);
-    }
+}else{
+    var err="You can't have this page"
+    res.render('admin/errorPage',{err:err})
+}
+    
    });
 
    /**STORE THE NEW USER UPDATE */
@@ -177,15 +220,15 @@ module.exports = function(app){
 
     if (!req.files){
         db.query(idpro, function(err, result){
-            if(err) throw err;
+            if(err) {res.render('admin/errorPage',{err:err})}
            
                let edituser = "UPDATE user SET nom= '"+nom+"', prenom=  '"+prenom+"', ville=  '"+ville+"', email='"+email+"', numTel= '"+numTel+"', numCarte= '"+numCarte+"', address='"+address+"', userName=  '"+username+"', mdp= '"+pw+"', id_profile ="+result[0].id_profile+"  where id_user = "+id+" ";
                db.query(edituser, function(err, result1){
-                   if(err) throw err;
+                   if(err) {res.render('admin/errorPage',{err:err})}
                });
              
            
-       });
+            });
     }else{
         var file = req.files.photo;
     var img_name=file.name;
@@ -197,11 +240,12 @@ module.exports = function(app){
      
               return res.status(500).send(err);
               db.query(idpro, function(err, result){
-                if(err) throw err;
+                if(err) {res.render('admin/errorPage',{err:err})}
+                console.log("Profile id: "+result[0].id_profile)
                
                    let edituser = "UPDATE user SET nom= '"+nom+"', prenom=  '"+prenom+"', ville=  '"+ville+"', photo= '"+img_name+"', email='"+email+"', numTel= '"+numTel+"', numCarte= '"+numCarte+"', address='"+address+"', userName=  '"+username+"', mdp= '"+pw+"', id_profile ="+result[0].id_profile+" where id_user = "+id+" ";
                    db.query(edituser, function(err, result1){
-                       if(err) throw err;
+                       if(err) {res.render('admin/errorPage',{err:err})}
                    });
                  
               
@@ -217,7 +261,7 @@ module.exports = function(app){
     req.session.message = {
         type: 'success',
         intro: 'Success:',
-        message: 'User modifier avec successé!'
+        message: 'User modifier avec success!'
     }
      
 res.redirect('/usersList');
@@ -226,12 +270,12 @@ res.redirect('/usersList');
    });
 
    /**DELETE A USER */
-   app.delete('/delete/profile/:id', function(req, res){
+   app.delete('/delete/user/:id', function(req, res){
        var id= req.params.id;
 
     let img_del= "SELECT photo FROM user WHERE id_user= "+id+"";
     db.query(img_del,function(err,result){
-        if(err) throw err;
+        if(err) {res.render('admin/errorPage',{err:err})}
 
         fs.unlink('static/admin/user-images/'+result[0].photo, function (err) {
             if (err) throw err;
@@ -242,20 +286,87 @@ res.redirect('/usersList');
        let del = "DELETE FROM user WHERE id_user = "+id+"";
        
        db.query(del,function(err, result){
-           if(err) throw err;
+           if(err) {res.render('admin/errorPage',{err:err})}
 
-           req.session.message = {
-            type: 'deleted',
-            intro: 'Deleted:',
-            message: 'Utilisateur supprimer'
-         }
-        
-        res.redirect('/usersList');
+           else{
+            req.session.message = {
+                type: 'deleted',
+                intro: 'Deleted:',
+                message: 'Utilisateur supprimer'
+             }
+            
+            res.redirect('/usersList');
+
+           }
+           
        })
 
    });
 
-  
+  /**notifications page */
+  app.get('/user/notification', redirectLogin,refreshNotif,function(req,res){
+      var id_user = req.session.user_id;
+      var title ="Tous les notifications"
+      
+
+      //select all the otifications that are accepted by this user and not traited
+      let demacpp ="SELECT n.read_at readatNotifier, ns.read_at readNotifs ,demande_id, data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE (n.id_user="+req.session.user_id+") and (n.id_notificaton = ns.id_notif) and n.type_notif=1 and (n.read_at IS NOT NULL) and (ns.updated_at IS NULL and ns.userIDaccepted="+req.session.user_id+")  ORDER BY created_at DESC"
+      //select all the notifications not already accepted
+      let dem = "SELECT n.read_at readatNotifier, ns.read_at readNotifs ,demande_id, data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE (n.id_user="+req.session.user_id+") and type_notif=1 and (n.read_at IS NULL) and n.id_notificaton=ns.id_notif and ns.updated_at IS NULL and (ns.userIDaccepted=0) ORDER BY created_at DESC"
+      //select all notifs traited and accepted by this user
+      let myNotifs ="SELECT n.read_at readatNotifier, ns.read_at readNotifs ,demande_id, data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE (n.id_user="+req.session.user_id+") and type_notif=1 and (n.read_at IS NOT NULL) and n.id_notificaton=ns.id_notif and (ns.updated_at IS NOT NULL) and (ns.userIDaccepted="+req.session.user_id+") ORDER BY created_at DESC"
+
+      db.query(demacpp, (err,result)=>{
+          if(err){res.render('admin/errorPage',{err:err})}
+          db.query(dem,(err1,result1)=>{
+              if(err1){res.render('admin/errorPage',{err:err1})}
+              db.query(myNotifs,(err2,result2)=>{
+                  if(err2){res.render('admin/errorPage',{err:err2})}
+              
+              else{
+
+        //array list docs names no accepted demandes       
+        var array2=[];
+        if(result!== undefined){
+          for (var i in result) {
+            
+            var data = result[i].data.split([',']);
+             array2.push(data[1]);
+             console.log("nom doc: "+data[1]+" "+i)
+          }
+
+        }
+
+        //array list docs name no traited demandes
+        var array3=[];
+        if(result1!== []){
+          for (var i in result1) {
+            
+            var data = result1[i].data.split([',']);
+             array3.push(data[1]);
+             console.log("nom doc no accpted: "+data[1]+" "+i)
+          }
+
+        }
+
+        //array list docs traited by this user
+        var array1=[];
+        if(result2!== []){
+          for (var i in result2) {
+            
+            var data = result2[i].data.split([',']);
+             array1.push(data[1]);
+             console.log("nom doc no accpted: "+data[1]+" "+i)
+          }
+
+        }
+
+                  res.render('admin/notifications',{title,data:result1,data1:result,nom_doc:array3,nom_doc2:array2,moment:moment,data3:result2,nom_doc3:array1})
+              }
+            })
+          })
+      })
+  })
    
     
 };

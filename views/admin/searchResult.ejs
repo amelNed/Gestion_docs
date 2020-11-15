@@ -1,0 +1,149 @@
+<%- include('header');  %>
+
+<div class="content-body">
+
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+                <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+            </ol>
+        </div>
+    </div>
+    <!-- row -->
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Resultat Recherche</h4>
+
+                        <% if(message){ %>
+                            <% if(message.type === 'success'){ %>
+                            <div class="alert alert-success">
+                                <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                              <% } else if(message.type === 'deleted'){ %>
+                                <div class="alert alert-danger">
+                                   <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                                  </div>
+                              <% }} %>
+
+                              
+                        <!-- Nav tabs -->
+                        <div class="default-tab">
+                            <ul class="nav nav-tabs mb-3" role="tablist">
+                                <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#home">Documents</a>
+                                </li>
+                                <% if(profile_id!==7){ %>
+                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#profile">Users</a>
+                                </li>
+                                <% } %>
+                                <% if(profile_id===5){%>
+                                <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#contact">Demandes</a>
+                                </li>
+                                <% } %>
+                                
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel">
+                                    <div class="p-t-15">
+                                        <% data.forEach(function (result) { %>
+                                            
+                                            <form>
+                                            <div class="media border-bottom-1 pt-3 pb-3">
+                                                <!--img width="35" src="./images/avatar/1.jpg" class="mr-3 rounded-circle"-->
+                                                <div class="media-body">
+                                                    
+                                                    <p class="mb-0"><a href="/displayResultD/<%= result.id_doc %>"><%= result.nom_doc %></a></p>
+                                                    
+                                                </div>
+                                            </div>
+                                        </form>
+                                       
+                                        <% }) %>
+                                    </div>
+                                </div>
+
+                                <% if(profile_id !==7 ){ %>
+                                <div class="tab-pane fade" id="profile">
+                                    <div class="p-t-15">
+                                       
+                                        <% data2.forEach(function (user) { %>
+                                            
+                                            <form>
+                                            <div class="media border-bottom-1 pt-3 pb-3">
+                                                <!--img width="35" src="./images/avatar/1.jpg" class="mr-3 rounded-circle"-->
+                                                <div class="media-body">
+                                                    
+                                                    <p class="mb-0"><a href="/displayResultU/<%= user.id_user %>"><%= user.nom %> <%= user.prenom %></a></p>
+                                                    
+                                                </div>
+                                            </div>
+                                        </form>
+                                       
+                                        <% }) %>
+                                        
+                                    </div>
+                                </div>
+                                <% } %>
+
+                                <div class="tab-pane fade" id="contact">
+                                    <div class="p-t-15">
+                                        <h4>This is contact title</h4>
+                                        <div>
+                                            <table class="table table-xs">
+                                              <thead>
+                                                  <tr>
+                                                      <th>Demande</th>
+                                                      <th>Nom Type Document</th>
+                                                      <th>Nombre Etapes</th>
+                                                      <th>Numero Etape Actuelle</th>
+                                                      <th>Client </th>
+                                                      <th>Date</th>
+                                                    
+                                                  </tr>
+                                              </thead>
+                                              <tbody>
+                                                  <% var i=1; data3.forEach(function (demande) { %>
+                                                   <tr class="col-md-2">
+                                                       <td><span><b><%= i %></b></span></td>
+                                                       <td><span><%= demande.nomdoc %></span></td>
+                                                       <td><span><%= demande.nbre_etapes %></span></td>
+                                                       <td><span><%= demande.num_etape %></span></td>
+                                                       <td><span><%= demande.nom %> <%= demande.prenom %></span></td>
+                                                       <td><span><%=  moment(demande.created_date).format('DD-MM-YYYY') %> <br> <%=  moment(demande.created_date).format('HH:MM') %></span></td>
+                                                      
+                                                       <td>
+                                                          <form action="/admin/deleteDemande/<%= demande.id_demande %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer cette demande?')">
+                                                             
+                                                              <!--a href="/admin/details/Demande/<%= demande.id_demande %>" class="btn btn-primary" title="Details"><i class="fa fa-align-justify"></i></a-->
+                                                              <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                                            
+                                                          </form>
+                                                      </td>
+                                                   </tr>
+                                                  
+                                               </tbody>
+                                               <% i++; }) %>
+                                           </table>
+                                          </div>
+                                    </div>
+                                </div>
+                              
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+           
+            
+           
+        </div>
+    </div>
+    <!-- #/ container -->
+</div>
+
+<%- include('footer');  %>

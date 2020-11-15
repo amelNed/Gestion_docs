@@ -1,0 +1,102 @@
+<%- include('header');  %>
+
+<div class="content-body">
+
+    <div class="row page-titles mx-0">
+        <div class="col p-md-0">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+                <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+            </ol>
+        </div>
+    </div>
+
+<!-- row -->
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Details</h3>
+
+                    <% if(type===1){%>
+                     <center>     
+                        <ul>
+                            <% data.forEach(function (user) { %>
+                            <li><img src="/static/admin/user-images/<%= user.photo %>" alt="" width="300" height="300"></li>
+                            <li><span><b>Nom: </b></span> <%= user.nom %></li>
+                            <li><span><b>Prénom: </b></span> <%= user.prenom %></li>
+                            <li><span><b>Ville: </b></span> <%= user.ville %></li>
+                            <li><span><b>Address: </b></span> <%= user.address %></li>
+                            <li><span><b>Numéro Téléphone: </b></span> <%= user.numTel %></li>
+                            <li><span><b>Numéro Carte d'Identitée: </b></span> <%= user.numCarte %></li>
+                            <li><span><b>Email: </b></span> <%= user.email %></li>
+                            <li><span><b>Nom Profil: </b></span> <%= nomprofi %></li>
+                            <li><span><b>Username: </b></span> <%= user.userName %></li>
+                            
+                            
+                            <% }) %>
+                          </ul>
+
+
+                        </center>  
+
+
+                   <% } %>
+<!---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+                   <% if(type===2){ %>
+
+                    <table class="table table-xs">
+                        <thead>
+                            <tr>
+                                <th>Nom Document </th>
+                                <th>download </th>
+                                <th>Createur </th>
+                              
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                            <% data2.forEach(function (doc) { %>
+                             <tr class="col-md-2">
+                                
+                                 <td><p><span><img src="/static/admin/icons/microsoft-word-2019--v2.png" width="40" height="40"></span><%= doc.nom_doc %></p></td>
+                                 <td><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/docx" ><a href="/static/admin/documents/<%= doc.nom_doc %>" class="btn btn-primary"> Download </a></object></td>
+                                 
+                                 
+                                 <td>
+                                    <% data3.forEach(function (user) { %>
+                                    <b><%= user.nom %> <%= user.prenom %>  </b><span style="text-align: left;"><%= user.date.toDateString() %> <br> <%= user.date.toTimeString() %></span><hr>
+                                    <% }) %>
+                                </td>
+                                
+                             </tr>
+                             <% }) %>
+                         </tbody>
+                     </table>
+                    <%}%>
+
+                </div>
+            </div>
+        </div>
+        
+       
+        
+       
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+<%- include('footer');  %>

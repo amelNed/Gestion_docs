@@ -1,0 +1,78 @@
+<%- include("../../../views/admin/header"); %>
+
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left">
+                        <h3>Témoignages</h3>
+                    </div>
+
+                    <% if(message){ %>
+                        <% if(message.type === 'success'){ %>
+                        <div class="alert alert-success">
+                            <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                          </div>
+                          <% } else if(message.type === 'deleted'){ %>
+                            <div class="alert alert-danger">
+                               <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                          <% }} %>
+
+                          
+                          <div class="col-lg-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Temoignages</h4>
+                                    <p class="text-muted"><code></code>
+                                    </p>
+                                    <div id="accordion-three" class="accordion">
+
+                                        <% data.forEach(function (tem) { %>
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5 class="mb-0" data-toggle="collapse" data-target="#collapseOne4" aria-expanded="true" aria-controls="collapseOne4"><i class="fa" aria-hidden="true"></i> <%= tem.nom %> <%= tem.prenom %></h5>
+                                            </div>
+                                            <div id="collapseOne4" class="collapse show" data-parent="#accordion-three">
+                                                <div class="card-body"><%= unescape(tem.temoi_text) %></div>
+                                                <form action="/delete/temoignage/<%= tem.id_tem %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce temoignage?')">
+                                                    <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                                  
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                        <% }) %>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                     
+
+                    
+                    </div>
+    </div>
+    </div></div> </div></div>
+    </div> 
+    </div>     
+
+<%- include("../../../views/admin/footer"); %>

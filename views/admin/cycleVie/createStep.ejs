@@ -1,5 +1,14 @@
 <%- include("../../../views/admin/header"); %>
 
+<div class="row page-titles mx-0">
+  <div class="col p-md-0">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+      </ol>
+  </div>
+</div>
+
 
 <div class="content-body">
 
@@ -13,7 +22,7 @@
                 <div class="active-member">
                     <div class="table-responsive">
                     <div class="pull-left col-md-12">
-                        <h3>Nouveau cycle de document</h3>
+                        <h3>Nouveau cycle de type de document</h3>
                     </div>
 
                     <div class="row">
@@ -25,13 +34,13 @@
                                 <% if(message){ %>
                                   <div class="alert alert-warning"><%= message %></div>
                                 <% } %>
-                     
+                         <% if(updat===0){ %>
                          <form action="/admin/storedoc" method="POST" >
                             <div class="form-row">
 
                                 <div class="form-group col-md-12">
-                                    <label for=""><b>Nom du document</b></label>
-                                    <input type="text" class="form-control" name="nom" placeholder="New documen name" required>
+                                    <label for=""><b></b></label>
+                                    <input type="text" class="form-control" name="nom" placeholder="Entrer le nom du cycle de type de document" required>
                                   </div>
 
                             <div class="form-group col-md-12">
@@ -50,12 +59,46 @@
                                               Suivant
                                             </i>
                                           </button>
-                                          <a href="/home" class="btn btn-danger"><i class="fa fa-ban" > Annuler</i></a>
+                                          <a href="/admin/dashboard" class="btn btn-danger"><i class="fa fa-ban" > Annuler</i></a>
                                       </div>  </div>
                                 
 
                             </div>
                             </form>
+                            <% }else if(updat===1){ %>
+
+                              <form action="/admin/storedoc/<%= id_type %>?_method=PUT" method="POST" >
+                                <div class="form-row">
+    
+                                    <div class="form-group col-md-12">
+                                        <label for=""><b>Entrer le nom du cycle de document</b></label>
+                                        <input type="text" class="form-control" name="nom" value="<%= nomtype %>" required>
+                                      </div>
+    
+                                <div class="form-group col-md-12">
+                                        <label for="quantity"><b>Nombre étapes:</b> </label><br>
+                                         <input type="number" id="nombre" name="nombre" min="1" max="20" value="<%= nbretype %>" required>
+                                      </div>
+    
+                                      <input type="hidden" name="first" value="1">
+    
+                                      
+    
+                                        <div class="form-group col-md-12">
+                                          <div class="col-md-6 offset-md-4">
+                                              <button type="submit" class="btn btn-primary">
+                                                <i class="fa fa-check-circle-o" >
+                                                  Suivant
+                                                </i>
+                                              </button>
+                                              <a href="/admin/dashboard" class="btn btn-danger"><i class="fa fa-ban" > Annuler</i></a>
+                                          </div>  </div>
+                                    
+    
+                                </div>
+                                </form>
+
+                              <% } %>
                      
                     </div></div></div></div>
 

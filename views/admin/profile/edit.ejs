@@ -1,5 +1,14 @@
 <%- include("../../../views/admin/header"); %>
 
+<div class="row page-titles mx-0">
+  <div class="col p-md-0">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+      </ol>
+  </div>
+</div>
+
 <div class="content-body">
 
     <div class="container-fluid mt-3">
@@ -12,7 +21,7 @@
                 <div class="active-member">
                     <div class="table-responsive">
                     <div class="pull-middle col-md-12">
-                        <h3>Nouvelle opération</h3>
+                        <h3>Modifier Profil</h3>
                     </div>
                     <div class="row">
                     <div class="col-lg-12">
@@ -24,18 +33,19 @@
                          <form action="/profile/update/<%= profile.id_profile %>?_method=PUT " method="POST">
                             
                                 <div class="form-group row">
-                                    <label class="col-sm-2 col-form-label">Nom profile</label>
+                                    <label class="col-sm-2 col-form-label">Nom profil</label>
                                     <div class="col-sm-10">
                                       <input  type="text" class="form-control" name="nom" value="<%= profile.nom %>" required>
                                     </div><br><br>
 
+                                    <label  class="col-sm-2 col-form-label">Opérations</label><br><br>
                                 <div class="col-md-12"">
-                                    <div ><span>Privilèges: </span> <span><small>(The colored ones are the privileges accorded from the begining.)</small></span> </p>
-                                  </div>
+                                    <!--div ><span>Privilèges: </span> <span><small>(The colored ones are the privileges accorded from the begining.)</small></span> </p>
+                                  </div-->
                                   <% data1.forEach(function (operation) { %>
                                         <% if(data2.find( name => name.id_op === operation.id_op)) { %>  
-                                  <div class="form-group col-md-12" style="background-color: aquamarine;">
-                                      <input type="checkbox"  id="<%= operation.id_op %>" name="operation" value="<%= operation.op_nom %>" >
+                                  <div class="form-group col-md-12">
+                                      <input type="checkbox"  id="<%= operation.id_op %>" name="operation" value="<%= operation.op_nom %>" checked>
                                       <label for=""> <%= operation.op_nom %> </label><br>
                                   </div>
                                   <%  } else{ %>

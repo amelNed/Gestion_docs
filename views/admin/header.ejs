@@ -13,7 +13,7 @@
 
     
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/static/admin/images/favicon.png">
+    <link rel="icon" type="image/png" sizes="100x100" href="/static/admin/images/Logo/logo_favicon.jpg">
     <!-- Pignose Calender -->
     <link href="/static/admin/plugins/pg-calendar/css/pignose.calendar.min.css" rel="stylesheet">
     <!-- Chartist -->
@@ -49,14 +49,11 @@
         <!--**********************************
             Nav header start
         ***********************************-->
-        <div class="nav-header">
-            <div class="brand-logo">
-                <a href="index.html">
-                    <b class="logo-abbr"><img src="/static/admin/images/logo.png" alt=""> </b>
-                    <span class="logo-compact"><img src="/static/admin/images/logo-compact.png" alt=""></span>
-                    <span class="brand-title">
-                        <img src="/static/admin/images/logo-text.png" alt="">
-                    </span>
+        <div class="nav-header" style="background-color: white;">
+            <div class="brand-logo" style="padding-top: 0; margin-top: 0; border-top: 0;">
+                <a href="/admin/dashboard">
+                    <b  ><center><img src="/static/admin/images/Logo/logo_transparent.png" alt=""  width="140px" height="110"></center> </b>
+                   
                 </a>
             </div>
         </div>
@@ -80,98 +77,159 @@
                         <div class="input-group-prepend">
                             <span class="input-group-text bg-transparent border-0 pr-2 pr-sm-3" id="basic-addon1"><i class="mdi mdi-magnify"></i></span>
                         </div>
-                        <input type="search" class="form-control" placeholder="Search Dashboard" aria-label="Search Dashboard">
-                        <div class="drop-down animated flipInX d-md-none">
-                            <form action="#">
-                                <input type="text" class="form-control" placeholder="Search">
-                            </form>
-                        </div>
+                        <form action="/user/searchResult" method="GET">
+                        <input type="search" class="form-control" placeholder="Search Dashboard" name="search" aria-label="Search Dashboard">
+                    </form>
+                        
                     </div>
                 </div>
                 <div class="header-right">
                     <ul class="clearfix">
+                        <% if(profile_id!==7){ %>
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
                                 <i class="mdi mdi-email-outline"></i>
-                                <span class="badge badge-pill gradient-1">3</span>
+                                <% if(nbreNoRead>0){ %>
+                                <span class="badge badge-pill gradient-1"><%= nbreNoRead %></span>
+                                <% } %>
+                                
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class="">3 New Messages</span>  
+                                    <% if(nbreNoRead>0){ %>
+                                        <span class=""><%= nbreNoRead %> Nouveaux Messages</span>  
+                                        <% } else{ %>
+                                            <span class="">0 Nouveaux Messages</span>
+                                            <% } %>
                                     <a href="javascript:void()" class="d-inline-block">
-                                        <span class="badge badge-pill gradient-1">3</span>
+                                        <% if(nbreNoRead>0){ %>
+                                        <span class="badge badge-pill gradient-1"><%= nbreNoRead %></span>
+                                        <% } %>
                                     </a>
                                 </div>
-                                <div class="dropdown-content-body">
+                                <div class="dropdown-content-body" >
+                                    
                                     <ul>
-                                        <li class="notification-unread">
-                                            <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="images/avatar/1.jpg" alt="">
+                                       <% if(contacts !== null){ %>
+                                        <% contacts.forEach(function (msg) { %>
+                                            
+                                            <% if(msg.read_at !== null){ %>
+                                        <li class="border bg-light">
+                                            <a href="/readcontactmessage/<%= msg.id %>">
+                                                <!--img class="float-left mr-3 avatar-img" src="/static/admin/images/avatar/1.jpg" alt=""-->
                                                 <div class="notification-content">
-                                                    <div class="notification-heading">Saiful Islam</div>
-                                                    <div class="notification-timestamp">08 Hours ago</div>
-                                                    <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
+                                                    <div class="notification-heading"><%= msg.nom %></div>
+                                                    <div class="notification-timestamp"><%=  moment(msg.created_at).format('DD-MM-YYYY') %> <br>  <%= moment(msg.created_at).format('HH:MM') %></div>
+                                                    
+                                                    <div class="notification-text"><%= unescape(msg.subject) %></div>
                                                 </div>
                                             </a>
                                         </li>
-                                        <li class="notification-unread">
-                                            <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="/static/admin/images/avatar/2.jpg" alt="">
+                                        <%} else{%>
+
+                                        <li class="border bg-white">
+                                            <a href="/readcontactmessage/<%= msg.id %>">
+                                                <!--img class="float-left mr-3 avatar-img" src="/static/admin/images/avatar/1.jpg" alt=""-->
                                                 <div class="notification-content">
-                                                    <div class="notification-heading">Adam Smith</div>
-                                                    <div class="notification-timestamp">08 Hours ago</div>
-                                                    <div class="notification-text">Can you do me a favour?</div>
+                                                    <div class="notification-heading"><%= msg.nom %></div>
+                                                    <div class="notification-timestamp"><%=  moment(msg.created_at).format('DD-MM-YYYY') %> <br>  <%= moment(msg.created_at).format('HH:MM') %></div>
+                                                    
+                                                    <div class="notification-text"><%= unescape(msg.subject) %></div>
                                                 </div>
                                             </a>
                                         </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="images/avatar/3.jpg" alt="">
-                                                <div class="notification-content">
-                                                    <div class="notification-heading">Barak Obama</div>
-                                                    <div class="notification-timestamp">08 Hours ago</div>
-                                                    <div class="notification-text">Hi Teddy, Just wanted to let you ...</div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <img class="float-left mr-3 avatar-img" src="images/avatar/4.jpg" alt="">
-                                                <div class="notification-content">
-                                                    <div class="notification-heading">Hilari Clinton</div>
-                                                    <div class="notification-timestamp">08 Hours ago</div>
-                                                    <div class="notification-text">Hello</div>
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                        <% } %>
+                                    
+                                        <%})  %> 
+                                   
+                                        <% } %>
+                                   
+                                    
+                                    
+                                        
+                                          
+                                            <% messages.forEach(function (msg) { %>
+                                                
+                                                <% if(msg.read_at !== null){ %>
+                                            <li class="border bg-light">
+                                                <a href="/readEmail/<%= msg.id_msg %>">
+                                                    <!--img class="float-left mr-3 avatar-img" src="/static/admin/images/avatar/1.jpg" alt=""-->
+                                                    <div class="notification-content">
+                                                        <div class="notification-heading"></div>
+                                                        <div class="notification-timestamp"><%=  moment(msg.sended_date).format('DD-MM-YYYY') %> <br>  <%= moment(msg.sended_date).format('HH:MM') %></div>
+                                                        
+                                                        <div class="notification-text"><%= unescape(msg.subject) %></div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <%} else{%>
+    
+                                            <li class="border bg-white">
+                                                <a href="/readEmail/<%= msg.id %>">
+                                                    <!--img class="float-left mr-3 avatar-img" src="/static/admin/images/avatar/1.jpg" alt=""-->
+                                                    <div class="notification-content">
+                                                        <div class="notification-heading"></div>
+                                                        <div class="notification-timestamp"><%=  moment(msg.sended_date).format('DD-MM-YYYY') %> <br>  <%= moment(msg.sended_date).format('HH:MM') %></div>
+                                                        
+                                                        <div class="notification-text"><%= unescape(msg.subject) %></div>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                            <% } %>
+                                        
+                                            <%})  %> 
+                                       
+                                            
+                                    </ul> 
+                                       
                                     
                                 </div>
                             </div>
                         </li>
+                        <% } %>
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
                                 <i class="mdi mdi-bell-outline"></i>
-                                <span class="badge badge-pill gradient-2"><%= notReadNotifs.length %></span>
+                            
+                                <% if(notReadNotifs.length>0){ %>
+                                    <span class="badge badge-pill gradient-2"><%= notReadNotifs.length %></span>
+                                <% } %>
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class=""> New Notifications</span>  
+                                    <span class=""> Notifications</span>  
                                     <a href="javascript:void()" class="d-inline-block">
+                                        <% if(notReadNotifs.length>0){ %>
                                         <span class="badge badge-pill gradient-2"><%= notReadNotifs.length %></span>
+                                        <% } %>
                                     </a>
                                 </div>
                                 <div class="dropdown-content-body">
                                     <ul>
                                        <% notifs.forEach(function (notif) { %>
 
-                                        <li>
+                                        <% if(notif.readatNotifier!==null){ %>
+                                        <li  class="border bg-light"> 
                                             <a href="/user/notifDtails/<%= notif.id_notif %>">
-                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span>
+                                                <!--span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span-->
                                                 <div class="notification-content">
-                                                    <h6 class="notification-heading"><%= notif.data %></h6>
-                                                    <span class="notification-text"><%= notif.created_at %></span> 
+                                                    <h6 class="notification-heading">Demande informations: <%= notif.data %></h6>
+                                                    <span class="notification-text"><%=  moment(notif.created_at).format('DD-MM-YYYY') %> <br>  <%= moment(notif.created_at).format('HH:MM') %></span> 
                                                 </div>
                                             </a>
                                         </li>
+
+                                            <% }else{%>
+                                                <li class="border bg-white">
+                                                <a href="/user/notifDtails/<%= notif.id_notif %>" >
+                                                    <!--span class="mr-3 avatar-icon bg-success-lighten-2"><i class="icon-present"></i></span-->
+                                                    <div class="notification-content">
+                                                        <h6 class="notification-heading">Demande informations: <%= notif.data %></h6>
+                                                        <span class="notification-text"><%=  moment(notif.created_at).format('DD-MM-YYYY') %> <br>  <%= moment(notif.created_at).format('HH:MM') %></span> 
+                                                    </div>
+                                                </a>
+
+                                            </li>
+                                            <% } %>
+                                        
                                         <% }) %>
                                     </ul>
                                     
@@ -179,17 +237,10 @@
                             </div>
                         </li>
                         <li class="icons dropdown d-none d-md-flex">
-                            <a href="javascript:void(0)" class="log-user"  data-toggle="dropdown">
-                                <span>English</span>  <i class="fa fa-angle-down f-s-14" aria-hidden="true"></i>
+                            <a href="/userProfile" >
+                                <span><b><%= username %></b></span>  
                             </a>
-                            <div class="drop-down dropdown-language animated fadeIn  dropdown-menu">
-                                <div class="dropdown-content-body">
-                                    <ul>
-                                        <li><a href="javascript:void()">English</a></li>
-                                        <li><a href="javascript:void()">Dutch</a></li>
-                                    </ul>
-                                </div>
-                            </div>
+                            
                         </li>
                         <li class="icons dropdown">
                             <div class="user-img c-pointer position-relative"   data-toggle="dropdown">
@@ -200,18 +251,16 @@
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="/userProfile"><i class="icon-user"></i> <span>Profile</span></a>
+                                            <a href="/userProfile"><i class="icon-user"></i> <span>Profil</span></a>
                                         </li>
-                                        <li>
+                                        <!--li>
                                             <a href="javascript:void()">
-                                                <i class="icon-envelope-open"></i> <span>Inbox</span> <div class="badge gradient-3 badge-pill gradient-1">3</div>
+                                                <i class="icon-envelope-open"></i> <span>Messages</span> <div class="badge gradient-3 badge-pill gradient-1">3</div>
                                             </a>
-                                        </li>
+                                        </li-->
                                         
                                         <hr class="my-2">
-                                        <li>
-                                            <a href="page-lock.html"><i class="icon-lock"></i> <span>Lock Screen</span></a>
-                                        </li>
+                                        
                                         <li><a href="/logout"><i class="icon-key"></i> <span>Logout</span></a></li>
                                     </ul>
                                 </div>
@@ -237,12 +286,12 @@
                             <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Home 1</a></li>
-                            <!-- <li><a href="./index-2.html">Home 2</a></li> -->
+                            <li><a href="/admin/dashboard">Home</a></li>
+                            <li><a href="/acceuil">Acceuil</a></li>
                         </ul>
                     </li>
                     
-                    
+                    <% if(profile_id===5){ %>
                     <li class="nav-label"> <b>Gestion</b></li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
@@ -257,16 +306,16 @@
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-note menu-icon"></i><span class="nav-text">Profiles</span>
+                            <i class="icon-note menu-icon"></i><span class="nav-text">Profils</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="/profileList">Liste des profiles</a></li>
-                            <li><a href="/profileList/create">Nouveau profile</a></li>
+                            <li><a href="/profileList">Liste des profils</a></li>
+                            <li><a href="/profileList/create">Nouveau profil</a></li>
                         </ul>
                     </li>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-note menu-icon"></i><span class="nav-text">Utilisateurs</span>
+                            <i class="icon-people menu-icon"></i><span class="nav-text">Utilisateurs</span>
                         </a>
                         <ul aria-expanded="false">
                             <li><a href="/usersList">Liste des utilisateurs</a></li>
@@ -276,44 +325,55 @@
 
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-note menu-icon"></i><span class="nav-text">Documents</span>
+                            <i class="icon-pencil menu-icon"></i><span class="nav-text">Gérer Documents</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Liste des Documents</a></li>
-                            <li><a href="#">Nouveau static document</a></li>
+                            <li><a href="/admin/ListeCycle">Les cycles de type de document</a></li>
+                            <li><a href="/admin/createdocycle">Nouveau cycle de type document</a></li>
                         </ul>
                     </li>
 
+                    <% } %>
                     <li class="nav-label"> <b>Notification</b></li>
+                    
+                    <li>
+                        <a href="/user/demandeDocs">
+                            <i class="icon-note menu-icon"></i><span class="nav-text">Effectuer une demande</span>
+                        </a>
+                       
+                    </li>
+
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">Email</span>
+                            <i class="icon-docs menu-icon"></i><span class="nav-text">Documents</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="./email-inbox.html">Inbox</a></li>
-                            <li><a href="./email-read.html">Read</a></li>
-                            <li><a href="./email-compose.html">Compose</a></li>
+                            <li><a href="/user/doclist">Mes Documents</a></li>
+                            <% if(profile_id===5 || profile_id===7){ %>
+                            <li><a href="/user/archivedocs">Documents achievés</a></li>
+                            <%}%>
                         </ul>
                     </li>
+
+                    <li>
+                        <a href="/user/notification">
+                            <i class="icon-bell menu-icon"></i> <span class="nav-text">Notifications</span>
+                        </a>
+                        
+                    </li>
+                    <% if(profile_id!==7){ %>
                     <li>
                         <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-screen-tablet menu-icon"></i><span class="nav-text">Documents</span>
+                            <i class="icon-envelope menu-icon"></i> <span class="nav-text">Messages</span>
                         </a>
                         <ul aria-expanded="false">
-                            <li><a href="#">Documents à signer</a></li>
-                            <li><a href="#">Documents signer</a></li>
+                            <li><a href="/messagesnonlus">Messages non lus</a></li>
+                            <li><a href="/messageslus">Messages lus</a></li>
+                            <li><a href="/newEmail">Nouveau</a></li>
                         </ul>
                     </li>
-                    <li>
-                        <a class="has-arrow" href="javascript:void()" aria-expanded="false">
-                            <i class="icon-graph menu-icon"></i> <span class="nav-text">Historique</span>
-                        </a>
-                        <ul aria-expanded="false">
-                            <li><a href="./chart-flot.html">Document</a></li>
-                            <li><a href="./chart-morris.html">utilisateurs</a></li>
-                            
-                        </ul>
-                    </li>
+                    <% } %>
+                    
                     
                     
                     

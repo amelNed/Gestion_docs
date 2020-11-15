@@ -1,5 +1,14 @@
 <%- include("../../../views/admin/header"); %>
 
+<div class="row page-titles mx-0">
+  <div class="col p-md-0">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+      </ol>
+  </div>
+</div>
+
 <div class="content-body">
 
     <div class="container-fluid mt-3">
@@ -37,7 +46,7 @@
 
                             
                                   <div class="form-group col-md-4">
-                                    <label for="inputProfile">Profile</label>
+                                    <label for="inputProfile">Profil</label>
                                     <select id="inputProfile" name="profile" class="form-control">
                                       <% data.forEach(function(profile){ %>
                                       <option><%= profile.nom %></option>
@@ -58,7 +67,11 @@
                                               Suivant
                                             </i>
                                           </button>
+                                          <% if(numstep===1){ %>
+                                          <a href="/admin/backCreateCycle/<%= preID %>" class="btn btn-danger"><i class="fa fa-ban" > Retour</i></a>
+                                          <% }else{ %>
                                           <a href="/admin/previewStep/<%= preID %>" class="btn btn-danger"><i class="fa fa-ban" > Retour</i></a>
+                                          <% } %>
                                       </div>  </div>
                                 
 
@@ -100,7 +113,7 @@
                                                 Suivant
                                               </i>
                                             </button>
-                                            <a href="/admin/previewStep/<%= preID %>" class="btn btn-danger"><i class="fa fa-ban" > Retour</i></a>
+                                            <!--a href="/admin/previewStep/<%= preID %>" class="btn btn-danger"><i class="fa fa-ban" > Retour</i></a-->
                                         </div>  </div>
                                   
   

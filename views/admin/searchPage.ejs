@@ -1,0 +1,51 @@
+<%- include('header');  %>
+
+<div class="content-body">
+
+                    <% if(message){ %>
+                        <% if(message.type === 'success'){ %>
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+                             <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                          </div>
+                          <% } else if(message.type === 'error'){ %>
+                            <div class="alert alert-danger">
+                                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">X</button>
+                                 <strong><%= message.intro %> </strong><span><%= message.message %></span>
+                              </div>
+                          <% }} %>
+
+                          <div class="col-xl-3 col-lg-6 col-sm-6 col-xxl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Resultat Recherche</h4>
+                                    <div id="activity">
+        
+                                        <% data.forEach(function (result) { %>
+                                            
+                                        <form>
+                                        <div class="media border-bottom-1 pt-3 pb-3">
+                                            <!--img width="35" src="./images/avatar/1.jpg" class="mr-3 rounded-circle"-->
+                                            <div class="media-body">
+                                                
+                                                <p class="mb-0"><a href="/displayResult"><%= result.nom_doc %></a></p>
+                                                
+                                            </div>
+                                        </div>
+                                    </form>
+                                   
+                                    <% }) %>
+        
+                                   
+                                      
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        
+
+                    </div>
+
+    <%- include('footer');  %>

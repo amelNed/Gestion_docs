@@ -1,6 +1,6 @@
 var bodyParser = require('body-parser');
 var passport = require('passport');
-
+var moment = require('moment')
 
 
 var urlencodedParser = bodyParser.urlencoded({ extended: true });
@@ -17,7 +17,7 @@ const redirectLogin = (req, res, next)=>{
 
 const redirectHome = (req, res, next)=>{
  if(req.session.user_id){
-     res.redirect('/home');
+     res.redirect('/admin/dashboard');
  }else{
      next();
  }
@@ -67,6 +67,9 @@ app.post('/login', urlencodedParser, redirectHome, function(request, response) {
         request.session.nom = results[0].nom;
         request.session.prenom = results[0].prenom;
         request.session.profile_id = results[0].id_profile;
+        request.session.username = results[0].userName;
+        request.session.moment = moment;
+        request.session.email = results[0].email;
         // SELECT THE PROFILE OF THE USER
 
         console.log("The user profile id: "+results[0].id_profile)
@@ -74,22 +77,65 @@ app.post('/login', urlencodedParser, redirectHome, function(request, response) {
         db.query(proff, function(err, result1){
           if(err) throw err;
 
-        //console.log('Le nom du profile: '+result1[0].nom)
-        request.session.profile = result1[0].nom;
-        let notif = "SELECT n.read_at demande_id, data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE n.id_user="+request.session.user_id+" and n.id_notificaton = ns.id_notif ORDER BY created_at DESC"
+        //select notifs -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+        request.session.profile = result1[0].nom; //nom profil du user connecter
+        let notif= "SELECT n.read_at readatNotifier, ns.read_at readNotifs ,demande_id, ns.data data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE (n.id_user="+request.session.user_id+") and (n.id_notificaton = ns.id_notif) and  ((n.type_notif=1 and ns.updated_at IS NULL and (ns.userIDaccepted="+results[0].id_user+" or ns.userIDaccepted=0)) or (n.type_notif=2 and n.read_at IS NULL)) ORDER BY created_at DESC "
         db.query(notif, (err1,result2)=>{
           if(err1) throw err1;
+           console.log(result2)
+          
         
           request.session.notifs = result2;
           console.log("Nombre notifications: "+request.session.notifs.length)
 
-          let onlynotread = "select n.read_at demande_id, data, created_at, ns.id_notif, n.type_notif from notifier n, notifications ns where n.id_user="+request.session.user_id+" and n.id_notificaton = ns.id_notif and n.read_at IS NULL and ns.read_at IS NULL ORDER BY created_at DESC"
+          let onlynotread = "SELECT n.read_at readatNotifier, ns.read_at readNotifs ,demande_id, data, created_at, ns.id_notif, n.type_notif FROM notifier n, notifications ns WHERE (n.id_user="+request.session.user_id+") and (n.id_notificaton = ns.id_notif) and  (( n.type_notif=1 and n.read_at IS NULL and ns.updated_at IS NULL and (ns.userIDaccepted="+results[0].id_user+" or ns.userIDaccepted=0)) or (n.type_notif=2 and n.read_at IS NULL)) "
           db.query(onlynotread, (err3, result3)=>{
             if(err3) throw err3;
    
             request.session.notReadNotifs = result3;
             console.log("Nombre notifications: "+request.session.notReadNotifs.length)
-            response.redirect('/home');
+
+            //SELECT THE MESSAGES 
+            let noreadmsg ="select * from message where id_destinataire="+results[0].id_user+" and read_at IS NULL"
+            let allMessages = "select * from message where id_destinataire="+results[0].id_user+" ORDER BY sended_date DESC"
+            db.query(allMessages,(err44,result44)=>{
+              console.log(result44);
+              request.session.messages = result44;
+
+              db.query(noreadmsg,(err9,result9)=>{
+
+             request.session.nbreNoRead = result9.length;
+            
+
+          //SELECT THE MESSAGES notif-------------------------------------------------------------------------------------------------------
+          if(results[0].id_user === 2){
+
+            let allMsg = "select * from contact ORDER BY created_at DESC"
+            db.query(allMsg, (err4, result4)=>{
+              if(err4) throw err4;
+
+              request.session.contacts = result4;
+
+              let noReadMsg = "select * from contact where read_at IS NULL ORDER BY created_at DESC"
+              db.query(noReadMsg, (err5,result5)=>{
+                if(err5) throw err5;
+
+                
+                request.session.nbreNoRead =parseInt(request.session.nbreNoRead,10)+parseInt(result5.length,10);
+
+                response.redirect('/admin/dashboard');
+              })
+            })
+
+          } else{
+            request.session.contacts=null;
+            
+            response.redirect('/admin/dashboard');
+
+          }  
+        })       
+        })
+         
 
           })
          
@@ -144,7 +190,7 @@ app.get('/userProfile', function(req, res){
   db.query(data, function(err,result){
     if(err) throw err;
 
-    res.render('admin/users/profile',{data: result,title});
+    res.render('admin/users/profile',{data: result,title,moment:moment});
   })
 });
 

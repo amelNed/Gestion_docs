@@ -1,5 +1,14 @@
 <%- include("../../../views/admin/header"); %>
 
+<div class="row page-titles mx-0">
+  <div class="col p-md-0">
+      <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+          <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+      </ol>
+  </div>
+</div>
+
 
 <div class="content-body">
 
@@ -34,14 +43,22 @@
 
                                 <table>
                                     <tr>
-                                        <td><b>Nom type document: </b></td>
+                                        <td><b>Nom du cycle de document: </b></td>
                                         <td style="text-align: center;"><%= nom_doc %></td>
                                     </tr>
 
                                     <tr>
-                                        <td><b>L'utilisateur a effectuer la demande: </b></td>
+                                        <td><b>L'utilisateur qui a effectué la demande: </b></td>
                                         <td style="text-align: center;"><%= nom_user %></td>
                                     </tr>
+
+                                    <% if(senderUser!==null){ %>
+                                      <tr>
+                                        <td><b>De l'utilisateur: </b></td>
+                                        <td style="text-align: center;"><%= senderUser %></td>
+                                    </tr>
+
+                                      <% } %>
                                  </table>
 
                             
@@ -51,7 +68,7 @@
 
                                   
 
-                                  <% if(accepted===null || ( user_accept===user_id && id_profile ===profile_id)){ %>
+                                  <% if(( user_accept===user_id && id_profile ===profile_id) && (notifsupdated===null && (accepte_user===0 || accepte_user===user_id))){ %>
                                     <div class="form-group col-md-12">
                                       <div class="col-md-6 offset-md-4">
                                           <button type="submit" class="btn btn-primary">
@@ -95,14 +112,26 @@
                                       <tbody>
                                         <% data.forEach(function (doc) { %>
                                            <tr class="col-md-2">
+                                             <% if(doc.mime === "application/vnd.openxmlformats-officedocument.word"){ %>
                                                <td></span><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/docx" >
                                                 <p><span><img src="/static/admin/icons/microsoft-word-2019--v2.png" >Télécharger : <a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
                                               </object></td>
+                                              <% } if(doc.mime === "application/pdf"){ %>
+                                                <td></span><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/docx" >
+                                                  <p><span><img src="/static/admin/icons/15519179861536080156-512.png" >Télécharger : <a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
+                                                </object></td>
+
+                                                <% } if(doc.mime==="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"){ %>
+                                                  <td><object data="/static/admin/documents/<%= doc.nom_doc %>" type="application/vnd.ms-excel" >
+                                                      <p><span><img src="/static/admin/icons/microsoft-excel-2019--v1.png" ></span><a href="/static/admin/documents/<%= doc.nom_doc %>"> <%= doc.nom_doc %> </a></p>
+                                                    </object></td>
+                                                    <% } %>
+                                                    
                                                <td><span> <%= doc.description %>  </span></td>
                                                <td><span>  </span></td>
                                               
                                                <td>
-                                                  <form action="#" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
+                                                  <form action="/delete/doc/<%= doc.id_doc %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
                                                      
                                                      
                                                       <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
@@ -115,7 +144,7 @@
                                        </tbody>
                                       
                                    </table>
-                                   <a href="/home" class="btn btn-info"><i class="fa fa-home" >Acceuil</i></a>
+                                   <a href="/admin/dashboard" class="btn btn-info"><i class="fa fa-home" >Home</i></a>
                                   
                                   </div>
                           

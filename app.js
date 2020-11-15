@@ -4,6 +4,7 @@ var mysql = require('mysql');
 var bodyparser = require('body-parser');
 var fileUpload = require('express-fileupload');
 
+
 var operationController = require('./Controllers/operationController');
 var userController = require('./Controllers/userController');
 var profileController = require('./Controllers/profileController');
@@ -12,6 +13,10 @@ var documentController = require('./Controllers/documentController');
 var gestiondocsController = require('./Controllers/gestiondocsController');
 var demandedocsController = require('./Controllers/demandedocsController');
 var documentsController = require('./Controllers/documentsController');
+var homeController = require('./Controllers/homeController');
+var emailController = require('./Controllers/emailController');
+var searchController = require('./Controllers/searchController');
+var dashboardController = require('./Controllers/dashboardController');
 
 app.use(fileUpload());
 
@@ -86,9 +91,24 @@ app.use((req, res, next)=>{
     res.locals.profile = req.session.profile;
     res.locals.nom = req.session.nom;
     res.locals.prenom = req.session.prenom;
-    res.locals.notifs = req.session.notifs
+    
     res.locals.profile_id = req.session.profile_id;
-    res.locals.notReadNotifs = req.session.notReadNotifs;
+    res.locals.email = req.session.email;
+   
+   
+    res.locals.nom_doc = req.session.nom_doc;
+    res.locals.nom_user = req.session.nom_user;
+    res.locals.senderUser = req.session.senderUser;
+    res.locals.username = req.session.username
+    res.locals.moment = req.session.moment;
+    
+    res.locals.contacts= req.session.contacts; //array of contatct messages
+    res.locals.nbreNoRead = req.session.nbreNoRead //nombre all no read messages
+    res.locals.messages = req.session.messages // array of the messages Message
+    res.locals.notReadNotifs = req.session.notReadNotifs //no read notifs
+    res.locals.notifs = req.session.notifs //array of notifs 
+
+   
    // delete req.session.user_id;
   //  delete req.session.photo;
     next();
@@ -123,6 +143,18 @@ demandedocsController(app);
 
 //Gestion des documents (the use it one)
 documentsController(app);
+
+// Front office controller
+homeController(app);
+
+//Email controller
+emailController(app);
+
+// Search controller
+searchController(app);
+
+// dashboard controller
+dashboardController(app);
 
 
 //set up the template engine

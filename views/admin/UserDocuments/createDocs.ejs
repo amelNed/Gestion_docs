@@ -61,12 +61,12 @@
                                                <td><span>  </span></td>
                                               
                                                <td>
-                                                  <form action="/delete/document/<%= docExist %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
+                                                  <!--form action="/delete/document/<%= docExist %>?_method=DELETE" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer ce document?')">
                                                      
                                                      
                                                       <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
                                                       
-                                                  </form>
+                                                  </form-->
                                               </td>
                                            </tr>
                                           
@@ -95,6 +95,10 @@
                                    
                                     <input type="hidden" name="notifID" value="<%= notif_id %>">
                                    <input type="hidden" name="docname" value="<%= doc_name %>">
+
+                                   <input type="hidden" name="docnamee" value="<%= docName %>">
+                                   <input type="hidden" name="docexit" value="<%= docExist %>">
+                                   <input type="hidden" name="desc" value="<%= description %>">
 
 
                                     <div class="form-group col-md-12">

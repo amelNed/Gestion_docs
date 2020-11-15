@@ -1,0 +1,77 @@
+<%- include("../../../views/admin/header"); %>
+<div class="row page-titles mx-0">
+    <div class="col p-md-0">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="javascript:void(0)">Dashboard</a></li>
+            <li class="breadcrumb-item active"><a href="/admin/dashboard">Home</a></li>
+        </ol>
+    </div>
+</div>
+
+<div class="content-body">
+
+    <div class="container-fluid mt-3">
+        <div class="row">
+
+            
+      <div class="col-lg-12 col-xl-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="active-member">
+                    <div class="table-responsive">
+                    <div class="pull-left">
+                        <h3>Demandes </h3>
+                    </div>
+
+                    <div>
+                        <table class="table table-xs">
+                          <thead>
+                              <tr>
+                                  <th>Demande</th>
+                                  <th>Nom Type Document</th>
+                                  <th>Nombre Etapes</th>
+                                  <th>Numero Etape Actuelle</th>
+                                  <th>Client </th>
+                                  <th>Date</th>
+                                
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <% var i=1; data.forEach(function (demande) { %>
+                               <tr class="col-md-2">
+                                   <td><span><b><%= i %></b></span></td>
+                                   <td><span><%= demande.nomdoc %></span></td>
+                                   <td><span><%= demande.nbre_etapes %></span></td>
+                                   <td><span><%= demande.num_etape %></span></td>
+                                   <td><span><%= demande.nom %> <%= demande.prenom %></span></td>
+                                   <td><span><%=  moment(demande.created_date).format('DD-MM-YYYY') %></span></td>
+                                  
+                                   <td>
+                                      <form action="#" method="post" onsubmit="return confirm('Voulez vous vraiment supprimer cet achat?')">
+                                         
+                                          <a href="/admin/details/Demande/<%= demande.id_demande %>" class="btn btn-primary" title="Details"><i class="fa fa-align-justify"></i></a>
+                                          <button type="submit" class="btn btn-danger" title="supprimer"><i class="fa fa-trash-o fa-fw"></i></button>
+                        
+                                      </form>
+                                  </td>
+                               </tr>
+                              
+                           </tbody>
+                           <% i++; }) %>
+                       </table>
+                      </div>
+
+
+
+
+
+                    
+                </div>
+            </div>
+            </div></div> </div></div>
+            </div> 
+            </div>     
+
+
+
+<%- include("../../../views/admin/footer"); %>

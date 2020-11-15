@@ -1,6 +1,0 @@
-TEST:
-Ecrire un programme JAVA qui permet de:
-1-Ouvrir le fichier "diabetes.arff" se trouverons dans le repèrtoire DATA.
-2-Calculer et afficher le nombre de cas positive.
-3-Sauvegarder les cas négative dans un nouveau fichier arff "negative.arff".
-4-Calculer le produit scalaire entre la 1er instance et la 6eme instance.
